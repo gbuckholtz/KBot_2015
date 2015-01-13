@@ -18,7 +18,7 @@ public class PositionPID extends PIDSubsystem {
     	double max = .75;
     	setOutputRange(-max, max);
     	setInputRange(0,1800);
-    	setAbsoluteTolerance(2);
+    	setAbsoluteTolerance(5);
     	enable();
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
