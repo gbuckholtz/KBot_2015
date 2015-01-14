@@ -1,18 +1,18 @@
+package kbot.commands;
 
-package kbot.pid.commands;
-
+import kbot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
-
-import kbot.pid.Robot;
 
 /**
  *
  */
-public class ExampleCommand extends Command {
+public class EncoderTest extends Command {
 
-    public ExampleCommand() {
+    public EncoderTest() {
+    	
+    	requires(Robot.distanceSubsystem);
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.exampleSubsystem);
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time

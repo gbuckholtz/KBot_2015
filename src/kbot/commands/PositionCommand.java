@@ -1,7 +1,7 @@
-package kbot.pid.commands;
+package kbot.commands;
 
-import kbot.pid.Robot;
-import kbot.pid.subsystems.PositionPID;
+import kbot.Robot;
+import kbot.subsystems.PositionPID;
 import edu.wpi.first.wpilibj.command.Command;
 //import edu.wpi.first.wpilibj.command.PIDCommand;
 

@@ -1,12 +1,12 @@
 
-package kbot.pid;
+package kbot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import kbot.pid.commands.*;
-import kbot.pid.subsystems.*;
+import kbot.commands.*;
+import kbot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the

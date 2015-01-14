@@ -1,6 +1,6 @@
-package kbot.pid.subsystems;
+package kbot.subsystems;
 
-import kbot.pid.commands.EncoderTest;
+import kbot.commands.EncoderTest;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
 /**

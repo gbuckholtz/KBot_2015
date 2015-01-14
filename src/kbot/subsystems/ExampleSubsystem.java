@@ -1,5 +1,5 @@
 
-package kbot.pid.subsystems;
+package kbot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
