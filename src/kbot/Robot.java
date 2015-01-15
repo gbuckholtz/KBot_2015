@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import kbot.commands.*;
-import kbot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -17,9 +15,6 @@ import kbot.subsystems.*;
  */
 public class Robot extends IterativeRobot {
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static PositionPID positionSubsystem;
-	public static DistancePID distanceSubsystem;
 	public static OI oi;
 
     Command autonomousCommand;
@@ -32,10 +27,7 @@ public class Robot extends IterativeRobot {
     	RobotMap.init();
 		oi = new OI();
         // instantiate the command used for the autonomous period
-        autonomousCommand = new ExampleCommand();
-        positionSubsystem = new PositionPID(); 
-        distanceSubsystem = new DistancePID ();
-        
+       // autonomousCommand = new ExampleCommand(); 
     }
 	
 	public void disabledPeriodic() {
