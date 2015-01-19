@@ -18,8 +18,6 @@ import kbot.subsystems.*;
 public class Robot extends IterativeRobot {
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static PositionPID positionSubsystem;
-	public static DistancePID distanceSubsystem;
 	public static OI oi;
 
     Command autonomousCommand;
@@ -33,8 +31,6 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         // instantiate the command used for the autonomous period
         autonomousCommand = new ExampleCommand();
-        positionSubsystem = new PositionPID(); 
-        distanceSubsystem = new DistancePID ();
         
     }
 	
