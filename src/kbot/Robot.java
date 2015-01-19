@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 
-	public static OI oi;
 
     Command autonomousCommand;
 
@@ -27,7 +26,7 @@ public class Robot extends IterativeRobot {
     	RobotMap.init();
 		oi = new OI();
         // instantiate the command used for the autonomous period
-       // autonomousCommand = new ExampleCommand(); 
+        autonomousCommand = new ExampleCommand();
     }
 	
 	public void disabledPeriodic() {
