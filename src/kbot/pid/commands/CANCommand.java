@@ -47,4 +47,20 @@ public class CANCommand extends Command {
     	
     	Robot.TalonPID.out();
     }
+    
+    protected boolean isFinished()
+    {
+    	return false;
+    }
+    
+    protected void end()
+    {
+    	
+    }
+    
+    protected void interrupted()
+    {
+    	
+    }
+}
 

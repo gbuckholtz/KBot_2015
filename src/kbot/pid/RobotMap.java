@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
  */
 public class RobotMap {
 	
-	public static void init()
-	{
 	public static Talon pidTalon;
 	public static AnalogPotentiometer pot;
 	public static Encoder encoder, leftEncoder, rightEncoder;

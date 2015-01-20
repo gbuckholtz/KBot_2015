@@ -23,17 +23,6 @@ public class OI {
 		
 	}
 	
-	public JoystickButton a_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_A);
-	public JoystickButton b_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_B);
-	public JoystickButton x_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_X);
-	
-	public OI()
-	{
-	//	a_butt.whenPressed(new CANCommand(500));
-	//	b_butt.whenPressed(new CANCommand(1000));
-	//	x_butt.whenPressed(new CANCommand(750));
-	}
-	
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
     // You create one by telling it which joystick it's on and which button
