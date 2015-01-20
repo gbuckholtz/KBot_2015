@@ -1,10 +1,13 @@
 
-package kbot;
+package kbot.pid;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import kbot.pid.commands.*;
+import kbot.pid.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -14,7 +17,15 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
+	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+	public static PositionPID positionSubsystem;
+	public static LeftDrivePID leftDistanceSubsystem;
+	//public static DistancePIDRight rightDistanceSubsystem;
+	public static EncoderPID encoderpid;
+	public static CANTalonSystem TalonPID;
+	public static OI oi;
+	double p,i,d;
+	double setpoint;
 
     Command autonomousCommand;
 
@@ -24,7 +35,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	RobotMap.init();
-		oi = new OI();
+		
         // instantiate the command used for the autonomous period
         autonomousCommand = new ExampleCommand();
        // positionSubsystem = new PositionPID(); 
@@ -36,10 +47,16 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("P", encoderpid.getPIDController().getP());
         SmartDashboard.putNumber("I", encoderpid.getPIDController().getI());
         SmartDashboard.putNumber("D", encoderpid.getPIDController().getD());
+        setpoint = 0;
+        SmartDashboard.putNumber("P", encoderpid.getPIDController().getP());
+        SmartDashboard.putNumber("I", encoderpid.getPIDController().getI());
+        SmartDashboard.putNumber("D", encoderpid.getPIDController().getD());
+        SmartDashboard.putNumber("Setpoint", setpoint);
     }
 	
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		
 	}
 
     public void autonomousInit() {
@@ -60,6 +77,8 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        
+        //encoderpid.getPIDController().startLiveWindowMode();
     }
 
     /**
@@ -67,7 +86,8 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-
+    	RobotMap.leftEncoder.reset();
+    	RobotMap.rightEncoder.reset();
     }
 
     /**
@@ -84,6 +104,14 @@ public class Robot extends IterativeRobot {
         //encoderpid.setSetpoint(setpoint);
         SmartDashboard.putBoolean("a_butt", oi.stick.getA());
         SmartDashboard.putBoolean("b_butt", oi.stick.getB());      
+        SmartDashboard.putNumber("Encoder", RobotMap.encoder.get());
+        //SmartDashboard.putData("PIDOut",Robot.encoderpid);
+        p = SmartDashboard.getNumber("P");
+        i = SmartDashboard.getNumber("I");
+        d = SmartDashboard.getNumber("D");
+        setpoint = SmartDashboard.getNumber("Setpoint");
+        encoderpid.getPIDController().setPID(p, i, d);
+        encoderpid.setSetpoint(setpoint);
     }
     
     /**

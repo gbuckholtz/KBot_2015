@@ -1,4 +1,4 @@
-package kbot;
+package kbot.pid;
 
 import edu.wpi.first.wpilibj.Joystick;
 

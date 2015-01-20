@@ -1,21 +1,32 @@
+package kbot.pid.commands;
 
-package kbot.commands;
-
+import kbot.pid.Robot;
+import kbot.pid.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
-import kbot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class ExampleCommand extends Command {
-
-    public ExampleCommand() {
+public class EncoderPosition extends Command {
+	public double setpoint = 0;
+	
+	public EncoderPosition() 
+	{ 
+		new EncoderPosition(0.0); 
+	}
+	
+    public EncoderPosition(double setpoint) 
+    {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.exampleSubsystem);
+        // eg. requires(chassis);
+    	//requires(Robot.encoderpid);
+    	this.setpoint = setpoint;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	SmartDashboard.putNumber("Setpoint", setpoint);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -24,7 +35,7 @@ public class ExampleCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Robot.encoderpid.onTarget();
     }
 
     // Called once after isFinished returns true
