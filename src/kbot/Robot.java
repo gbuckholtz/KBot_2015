@@ -27,6 +27,18 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         // instantiate the command used for the autonomous period
         autonomousCommand = new ExampleCommand();
+<<<<<<< HEAD:src/kbot/Robot.java
+=======
+       // positionSubsystem = new PositionPID(); 
+        encoderpid = new EncoderPID();
+        TalonPID = new CANTalonSystem();
+        //leftDistanceSubsystem = new DistancePIDLeft ();
+        //rightDistanceSubsystem = new DistancePIDRight ();
+        oi = new OI();
+        SmartDashboard.putNumber("P", encoderpid.getPIDController().getP());
+        SmartDashboard.putNumber("I", encoderpid.getPIDController().getI());
+        SmartDashboard.putNumber("D", encoderpid.getPIDController().getD());
+>>>>>>> 85c6f4f... Got TalonSRX to work with positional PID under no load. It doesn't quite work with CommandBased buttons, so we had to use iterative code in the command i.e. getA(), getB(), etc... Need to fix this soon. Also, discovered that PID values can only be positive and that P works best at very high numbers without the load (20).:src/kbot/pid/Robot.java
     }
 	
 	public void disabledPeriodic() {
@@ -66,6 +78,19 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+<<<<<<< HEAD:src/kbot/Robot.java
+=======
+        //SmartDashboard.putData("PIDOut",Robot.encoderpid);
+        //p = SmartDashboard.getNumber("P");
+        //i = SmartDashboard.getNumber("I");
+        //d = SmartDashboard.getNumber("D");
+        //setpoint = SmartDashboard.getNumber("Setpoint");
+        //encoderpid.getPIDController().setPID(p, i, d);
+        //encoderpid.setSetpoint(setpoint);
+        SmartDashboard.putBoolean("a_butt", oi.stick.getA());
+        SmartDashboard.putBoolean("b_butt", oi.stick.getB());
+        
+>>>>>>> 85c6f4f... Got TalonSRX to work with positional PID under no load. It doesn't quite work with CommandBased buttons, so we had to use iterative code in the command i.e. getA(), getB(), etc... Need to fix this soon. Also, discovered that PID values can only be positive and that P works best at very high numbers without the load (20).:src/kbot/pid/Robot.java
     }
     
     /**

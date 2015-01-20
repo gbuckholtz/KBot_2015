@@ -6,6 +6,21 @@ package kbot;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+<<<<<<< HEAD:src/kbot/OI.java
+=======
+	public XboxController stick = new XboxController(0);
+	public JoystickButton a_butt,b_butt,x_butt;
+
+	public OI()
+	{
+		a_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_A);
+		b_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_B);
+		//b_butt.whenPressed(new CANCommand(10000,"B"));
+		//a_butt.whenPressed(new CANCommand(5000,"A"));
+		
+	}
+	
+>>>>>>> 85c6f4f... Got TalonSRX to work with positional PID under no load. It doesn't quite work with CommandBased buttons, so we had to use iterative code in the command i.e. getA(), getB(), etc... Need to fix this soon. Also, discovered that PID values can only be positive and that P works best at very high numbers without the load (20).:src/kbot/pid/OI.java
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
     // You create one by telling it which joystick it's on and which button
