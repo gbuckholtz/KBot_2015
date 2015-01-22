@@ -1,4 +1,4 @@
-package kbot;
+package kbot.pid;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.Joystick;
  *
  * @author KBotics
  */
+
+// We should change the XboxController to extend a Joystick, as it will make it much more correct in object oriented programming
 public class XboxController {
     public Joystick m_joy;
     //Buttons

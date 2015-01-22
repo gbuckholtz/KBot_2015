@@ -1,5 +1,7 @@
-package kbot;
+package kbot.pid;
 
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -11,15 +13,16 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
  * floating around.
  */
 public class RobotMap {
-	public static Talon pidTalon;
-	public static AnalogPotentiometer pot;
-	public static Encoder encoder;
+	public static CANTalon pidTalon;
+	//public static AnalogPotentiometer pot;
+	//public static Encoder encoder;
 	
 	public static void init()
 	{
-		pidTalon = new Talon(0);
-		pot = new AnalogPotentiometer(0,1800);
-		encoder = new Encoder(0,1);
+		pidTalon = new CANTalon(0);
+		pidTalon.changeControlMode(ControlMode.Position);
+		//pot = new AnalogPotentiometer(0,1800);
+		//encoder = new Encoder(0,1);
 	}
     // For example to map the left and right motors, you could define the
     // following variables to use with your drivetrain subsystem.

@@ -1,12 +1,13 @@
 
-package kbot;
+package kbot.pid;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import kbot.commands.*;
-import kbot.subsystems.*;
+import kbot.pid.commands.*;
+import kbot.pid.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,6 +19,7 @@ import kbot.subsystems.*;
 public class Robot extends IterativeRobot {
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+	public static PIDCANTalon PIDSystem;
 	public static OI oi;
 
     Command autonomousCommand;
@@ -29,6 +31,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	RobotMap.init();
 		oi = new OI();
+		PIDSystem = new PIDCANTalon();
         // instantiate the command used for the autonomous period
         autonomousCommand = new ExampleCommand();
         

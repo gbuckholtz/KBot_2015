@@ -1,4 +1,8 @@
-package kbot;
+package kbot.pid;
+
+import kbot.pid.commands.ButtonTest;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**
@@ -7,6 +11,17 @@ package kbot;
  */
 public class OI {
 	public XboxController stick = new XboxController(0);
+	public Button x_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_X);
+	public Button b_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_B);
+	public Button a_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_A);
+	
+	public OI()
+	{
+		x_butt.whenPressed(new ButtonTest(5000));
+		b_butt.whenPressed(new ButtonTest(0));
+		a_butt.whenPressed(new ButtonTest(10000));
+		
+	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
     // You create one by telling it which joystick it's on and which button
