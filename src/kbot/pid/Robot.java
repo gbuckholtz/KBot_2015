@@ -34,7 +34,6 @@ public class Robot extends IterativeRobot {
 		PIDSystem = new PIDCANTalon();
         // instantiate the command used for the autonomous period
         autonomousCommand = new ExampleCommand();
-        
     }
 	
 	public void disabledPeriodic() {
