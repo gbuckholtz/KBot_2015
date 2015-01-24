@@ -1,6 +1,9 @@
 package kbot.pid;
 
 import kbot.pid.commands.ButtonTest;
+import kbot.pid.commands.DrivePIDCommand;
+import kbot.pid.commands.SetRightSpeed;
+import kbot.pid.commands.feedbackCommand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -14,12 +17,14 @@ public class OI {
 	public Button x_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_X);
 	public Button b_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_B);
 	public Button a_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_A);
+	public Button y_butt = new JoystickButton(stick.m_joy, XboxController.XBOX_Y);
 	
 	public OI()
 	{
-		x_butt.whenPressed(new ButtonTest(5000));
-		b_butt.whenPressed(new ButtonTest(0));
-		a_butt.whenPressed(new ButtonTest(10000));
+		x_butt.whenPressed(new DrivePIDCommand(5000));
+		b_butt.whenPressed(new DrivePIDCommand(0));
+		a_butt.whenPressed(new DrivePIDCommand(10000));
+		y_butt.whenPressed(new SetRightSpeed(0.5));
 		
 	}
     //// CREATING BUTTONS

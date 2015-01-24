@@ -1,17 +1,18 @@
 package kbot.pid.commands;
 
 import kbot.pid.Robot;
+import kbot.pid.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class CANTalonCommand extends Command {
+public class RightDriveCommand extends Command {
 
-    public CANTalonCommand() {
+    public RightDriveCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.pidcantalon);
+    	requires(Robot.rightDrivepid);
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +21,7 @@ public class CANTalonCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.pidcantalon.out();
+    	Robot.rightDrivepid.setSetpoint(RobotMap.leftEncoder.getRate()/4000);
     }
 
     // Make this return true when this Command no longer needs to run execute()

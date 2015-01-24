@@ -14,6 +14,10 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
  */
 public class RobotMap {
 	public static CANTalon pidTalon;
+	public static Talon leftTalon1,leftTalon2,leftTalon3;
+	public static Talon rightTalon1, rightTalon2, rightTalon3;
+	
+	public static Encoder leftEncoder, rightEncoder;
 	//public static AnalogPotentiometer pot;
 	//public static Encoder encoder;
 	
@@ -21,6 +25,21 @@ public class RobotMap {
 	{
 		pidTalon = new CANTalon(0);
 		pidTalon.changeControlMode(ControlMode.Position);
+		
+		leftTalon1 = new Talon(1);
+		leftTalon2 = new Talon(2);
+		leftTalon3 = new Talon(3);
+		rightTalon1 = new Talon(5);
+		rightTalon2 = new Talon(6);
+		rightTalon3 = new Talon(7);
+		
+		leftEncoder = new Encoder(4,5);
+		leftEncoder.reset();
+		leftEncoder.setReverseDirection(false);
+		rightEncoder = new Encoder(2,3);
+		rightEncoder.reset();
+		rightEncoder.setReverseDirection(true);
+		
 		//pot = new AnalogPotentiometer(0,1800);
 		//encoder = new Encoder(0,1);
 	}

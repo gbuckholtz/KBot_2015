@@ -30,7 +30,7 @@ public class PIDCANTalon extends Subsystem {
     
     public void out()
     {
-    	System.out.println("setPoint: "+RobotMap.pidTalon.getSetpoint()+" | Position: "+RobotMap.pidTalon.get());
+    	//System.out.println("setPoint: "+RobotMap.pidTalon.getSetpoint()+" | Position: "+RobotMap.pidTalon.get());
     }
 }
 

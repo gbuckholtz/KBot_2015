@@ -19,7 +19,9 @@ import kbot.pid.subsystems.*;
 public class Robot extends IterativeRobot {
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static PIDCANTalon PIDSystem;
+	public static PIDCANTalon pidcantalon;
+	public static DrivePID drivepid;
+	public static RightDrivePID rightDrivepid;
 	public static OI oi;
 
     Command autonomousCommand;
@@ -31,7 +33,9 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	RobotMap.init();
 		oi = new OI();
-		PIDSystem = new PIDCANTalon();
+		pidcantalon = new PIDCANTalon();
+		drivepid = new DrivePID();
+		rightDrivepid = new RightDrivePID();
         // instantiate the command used for the autonomous period
         autonomousCommand = new ExampleCommand();
     }

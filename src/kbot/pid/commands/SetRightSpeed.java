@@ -6,26 +6,27 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CANTalonCommand extends Command {
+public class SetRightSpeed extends Command {
 
-    public CANTalonCommand() {
+	public double setpoint;
+    public SetRightSpeed(double setpoint) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.pidcantalon);
+    	this.setpoint = setpoint;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.rightDrivepid.setSetpoint(this.setpoint);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.pidcantalon.out();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
