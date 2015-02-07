@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CalwController extends Command {
+public class ClawController extends Command {
 
-    public CalwController() {
+    public ClawController() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
