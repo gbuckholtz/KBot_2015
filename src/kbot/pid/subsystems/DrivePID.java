@@ -14,9 +14,9 @@ public class DrivePID extends PIDSubsystem {
 
     // Initialize your subsystem here
     public DrivePID() {
-    	super(0.01, 0.001, 0.01);
+    	super(0.005,0,0);//0.01, 0.001, 0.1); //(0.15,0.1,0.3);
     	setSetpoint(0);
-    	setAbsoluteTolerance(10);
+    	setPercentTolerance(10);
     	enable();
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
@@ -33,16 +33,19 @@ public class DrivePID extends PIDSubsystem {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    	return RobotMap.leftEncoder.get();
+    	return -RobotMap.leftEncoder.get();
     }
     
     protected void usePIDOutput(double output) {
         // Use output to drive your system, like a motor
         // e.g. yourMotor.set(output);
-    	output = -(output * 0.4);
+    	output = (output * 0.4);
     	RobotMap.leftTalon1.set(output);
     	RobotMap.leftTalon2.set(output);
     	RobotMap.leftTalon3.set(output);
+    	/*RobotMap.rightTalon1.set(-output);
+    	RobotMap.rightTalon2.set(-output);
+    	RobotMap.rightTalon3.set(-output);*/
     }
     
     public void out() {

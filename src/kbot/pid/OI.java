@@ -3,6 +3,7 @@ package kbot.pid;
 import kbot.pid.commands.ButtonTest;
 import kbot.pid.commands.DrivePIDCommand;
 import kbot.pid.commands.SetRightSpeed;
+import kbot.pid.commands.SwitchPID;
 import kbot.pid.commands.feedbackCommand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -21,11 +22,11 @@ public class OI {
 	
 	public OI()
 	{
-		x_butt.whenPressed(new DrivePIDCommand(5000));
-		b_butt.whenPressed(new DrivePIDCommand(0));
-		a_butt.whenPressed(new DrivePIDCommand(10000));
-		y_butt.whenPressed(new SetRightSpeed(0.5));
-		
+		x_butt.whenPressed(new DrivePIDCommand(-500));
+		b_butt.whenPressed(new DrivePIDCommand(500));
+		a_butt.whenPressed(new DrivePIDCommand(0));
+		//y_butt.whenPressed(new SwitchPID());
+		//y_butt.whenPressed(new SetRightSpeed(0.5));
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.

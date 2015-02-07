@@ -34,13 +34,13 @@ public class RightDrivePID extends PIDSubsystem {
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
     	
-    	return RobotMap.rightEncoder.getRate()/4000;
+    	return -RobotMap.rightEncoder.getRate()/4000;
     }
     
     protected void usePIDOutput(double output) {
         // Use output to drive your system, like a motor
         // e.g. yourMotor.set(output);
-    	output = -output;
+    	output = output;
     	RobotMap.rightTalon1.set(output);
     	RobotMap.rightTalon2.set(output);
     	RobotMap.rightTalon3.set(output);
