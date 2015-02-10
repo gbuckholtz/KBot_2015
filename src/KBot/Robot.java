@@ -1,6 +1,7 @@
 
 package KBot;
 
+import KBot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
+	public static DriveTrain drivetrain;
 
     Command autonomousCommand;
 
@@ -26,6 +28,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	RobotMap.init();
 		oi = new OI();
+		drivetrain = new DriveTrain();
         // instantiate the command used for the autonomous period
     }
 	

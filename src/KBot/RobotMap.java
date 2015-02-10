@@ -27,9 +27,9 @@ public class RobotMap {
     	leftDrive1 = new Talon(1);
     	leftDrive2 = new Talon(2);
     	leftDrive3 = new Talon(3);
-    	leftDrive1 = new Talon(4);
-    	leftDrive2 = new Talon(5);
-    	leftDrive3 = new Talon(6);
+    	rightDrive1 = new Talon(4);
+    	rightDrive2 = new Talon(5);
+    	rightDrive3 = new Talon(6);
     	liftTalon1 = new CANTalon(1);
     	liftTalon2 = new CANTalon(2);
     	liftTalon3 = new CANTalon(3);
