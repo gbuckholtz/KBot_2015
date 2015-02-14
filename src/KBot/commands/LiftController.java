@@ -1,5 +1,7 @@
 package KBot.commands;
 
+import KBot.Robot;
+import KBot.commands.LiftController.offset;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -8,11 +10,24 @@ import edu.wpi.first.wpilibj.command.Command;
 public class LiftController extends Command 
 {
 	int setpoint;
-	int direction;
+	public enum offset {RAISE, LOWER};
 
     public LiftController(int setpoint) 
     {
         this.setpoint = setpoint;
+    }
+
+	public LiftController(offset e)
+    {
+    	switch(e)
+    	{
+    	case RAISE:
+    		Robot.lift.setRelativeSetpoint();
+			break;
+    	case LOWER:
+    		Robot.lift.setRelativeSetpoint();
+    		break;
+    	}
     }
     
 

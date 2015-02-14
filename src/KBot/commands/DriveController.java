@@ -24,26 +24,12 @@ public class DriveController extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
-    	double rawLeftJoy = Robot.oi.driver.getJoyLeftY();
-    	double rawRightJoy = Robot.oi.driver.getJoyRightY();
-    	
-    	if(Math.abs(rawLeftJoy) > 0.01)
-    	{
-    		Robot.drivetrain.setLeftDrive(rawLeftJoy);
-    	}
-    	
-    	if(Math.abs(rawRightJoy) > 0.01)
-    	{
-        	Robot.drivetrain.setRightDrive(rawRightJoy);
-    	}
-    	if(Robot.oi.driver.getLB())
-    	{
-    		Robot.drivetrain.turnLeft();
-    	}
-    	if(Robot.oi.driver.getRB())
-    	{
-    		Robot.drivetrain.turnRight();
-    	}
+    	double left = Robot.oi.leftDriver.getY();
+    	double right = Robot.oi.rightDriver.getY();
+    	boolean leftTrigger = Robot.oi.leftDriver.getTrigger();
+    	boolean rightTrigger = Robot.oi.rightDriver.getTrigger();
+    
+    	Robot.drivetrain.drive(left,right,leftTrigger,rightTrigger);
     }
 
     // Make this return true when this Command no longer needs to run execute()

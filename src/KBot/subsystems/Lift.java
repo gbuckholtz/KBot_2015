@@ -11,6 +11,9 @@ public class Lift extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+	
+	
+	
 	public Lift()
 	{
 		RobotMap.liftTalon1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
@@ -19,9 +22,16 @@ public class Lift extends Subsystem {
 		RobotMap.liftTalon1.setProfile(0);
 	}
 
-    public void initDefaultCommand() {
+    public void initDefaultCommand() 
+    {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
+
+	public void setRelativeSetpoint() 
+	{
+		
+	}
+
 }
 

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class DriveTrain extends Subsystem {
-    
+    private final double DEADBAND = 0.01;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -19,30 +19,19 @@ public class DriveTrain extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void turnLeft()
+    public void drive(double left, double right, boolean leftTrigger, boolean rightTrigger)
     {
-    	setLeftDrive(0.5);
-    	setRightDrive(-0.1);
-    }
-    
-    public void turnRight()
-    {
-    	setRightDrive(0.5);
-    	setLeftDrive(-0.1);
-    }
-    
-    public void setLeftDrive(double left)
-    {
-    	RobotMap.leftDrive1.set(left);
-    	RobotMap.leftDrive2.set(left);
-    	RobotMap.leftDrive3.set(left);
-    }
-    
-    public void setRightDrive(double right)
-    {
-    	RobotMap.rightDrive1.set(right);
-    	RobotMap.rightDrive2.set(right);
-    	RobotMap.rightDrive3.set(right);
+    	if (Math.abs(left) < 0.01)
+    		left = 0;
+    	if (Math.abs(right) < 0.01)
+    		right = 0;
+    	
+    	if(leftTrigger)
+    		left = 0;
+    	if(rightTrigger)
+    		right = 0;
+    	
+    	RobotMap.drive.tankDrive(left, right, true);
     }
 }
 
