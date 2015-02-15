@@ -86,7 +86,7 @@ public class Robot extends IterativeRobot {
     
 	public void disabledPeriodic() {
 		//oi.operator.pacman();
-		System.out.println(oi.operator.m_joy.getRawAxis(3));
+		System.out.println("3: " + oi.operator.getPotAngle());
 	}
     
     /**

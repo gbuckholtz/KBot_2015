@@ -29,7 +29,7 @@ public class OperatorController {
     //Axes
     public static final int OPERATOR_MANUAL_X = 0;
     public static final int OPERATOR_MANUAL_Y = 1;
-    public static final int OPERATOR_POT = 2;
+    public static final int OPERATOR_POT = 3;
     
     //Array for level lights
     public static int[] levels = {OPERATOR_0, OPERATOR_1, OPERATOR_2, OPERATOR_3, OPERATOR_4, OPERATOR_5};
@@ -125,7 +125,7 @@ public class OperatorController {
     	if (getOverride())
     	{
     		//scaledX = (m_joy.getRawAxis(OPERATOR_MANUAL_X)-minX)/(maxX-minX);
-    		return m_joy.getRawAxis(OPERATOR_MANUAL_X);
+    		return -m_joy.getRawAxis(OPERATOR_MANUAL_X);
     	}
     	return 0;
     }
@@ -135,7 +135,7 @@ public class OperatorController {
     	if (getOverride())
     	{
     		//scaledY = (m_joy.getRawAxis(OPERATOR_MANUAL_Y)-minY)/(maxY-minY);
-    		return m_joy.getRawAxis(OPERATOR_MANUAL_Y);
+    		return -m_joy.getRawAxis(OPERATOR_MANUAL_Y);
     	}
         return 0;
     }
@@ -151,7 +151,7 @@ public class OperatorController {
     		//55 is horizontal right
     		//145 is vertical
     		//235 is horizontal left
-    	return (3316.6*(m_joy.getRawAxis(OPERATOR_POT))-50);
+    	return (131*(m_joy.getRawAxis(OPERATOR_POT))+145);
     }
     
     public void disableLights()
