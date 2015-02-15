@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DriveTrain extends Subsystem {
     private final double DEADBAND = 0.01;
+    private final boolean INVERT = true;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -31,6 +32,9 @@ public class DriveTrain extends Subsystem {
     	if(rightTrigger)
     		right = 0;
     	
+    	if(INVERT)
+    		left = -left; right = -right;
+    		
     	RobotMap.drive.tankDrive(left, right, true);
     }
 }

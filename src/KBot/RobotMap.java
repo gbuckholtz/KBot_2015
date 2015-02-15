@@ -22,7 +22,7 @@ public class RobotMap {
 	public static RobotDrive drive;
 	
 	//PWM Locations
-	private static final int leftDriveSplice = 0, leftDriveNot = 1, rightDriveSplice = 2, rightDriveNot = 3;
+	private static final int leftDriveSplice = 2, leftDriveNot = 3, rightDriveSplice = 0, rightDriveNot = 1;
     
 	public static void init() 
     {

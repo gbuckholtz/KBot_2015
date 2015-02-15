@@ -23,6 +23,7 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain drivetrain;
 	public static Lift lift;
 	public static Wrist wrist;
+	double max = 0, min = 1000;
 
     Command autonomousCommand;
 
@@ -36,10 +37,6 @@ public class Robot extends IterativeRobot {
 		drivetrain = new DriveTrain();
         // instantiate the command used for the autonomous period
     }
-	
-	public void disabledPeriodic() {
-		oi.operator.tron();
-	}
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
@@ -60,14 +57,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-    }
-
-    /**
-     * This function is called when the disabled button is hit.
-     * You can use it to reset subsystems before shutting down.
-     */
-    public void disabledInit(){
-
+        oi.operator.disableLights();
     }
 
     /**
@@ -76,7 +66,28 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         oi.operator.tron();
+        double val = oi.operator.m_joy.getRawAxis(2);
+        if (val > max)
+        	max = val;
+        if (val < min)
+        	min = val;
+        
+       // System.out.println("Max: " + max + " Min: " + min);
+        System.out.println(oi.operator.getManualY());
     }
+    
+    /**
+     * This function is called when the disabled button is hit.
+     * You can use it to reset subsystems before shutting down.
+     */
+    public void disabledInit(){
+
+    }
+    
+	public void disabledPeriodic() {
+		//oi.operator.pacman();
+		System.out.println(oi.operator.m_joy.getRawAxis(3));
+	}
     
     /**
      * This function is called periodically during test mode
