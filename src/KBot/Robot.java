@@ -1,9 +1,16 @@
 
 package KBot;
 
+import KBot.subsystems.Vision;
+import KBot.commands.AutoStack3;
+import KBot.commands.DriveController;
+import KBot.commands.DriveRelative;
+import KBot.commands.MoveLifter;
+import KBot.commands.TrackYellowTote;
 import KBot.subsystems.Claw;
 import KBot.subsystems.DriveTrain;
 import KBot.subsystems.Lift;
+import KBot.subsystems.VisionPIDDrive;
 import KBot.subsystems.Wrist;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,10 +29,13 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static DriveTrain drivetrain;
 	public static Lift lift;
+	public static Claw claw;
 	public static Wrist wrist;
-	double max = 0, min = 1000;
+	public static Vision visionSubsystem;
+	public static VisionPIDDrive visionPIDSubsystem;
+	double max = -1024, min = 1024;
 
-    Command autonomousCommand;
+    Command autonomousCommand, teleopCommand;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -33,13 +43,28 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	RobotMap.init();
+    	visionSubsystem = new Vision();
+    	visionPIDSubsystem = new VisionPIDDrive();
 		oi = new OI();
 		drivetrain = new DriveTrain();
+		lift = new Lift();
+		claw = new Claw();
+		wrist = new Wrist();		
+		
+        // instantiate the command used for the teleop period
+		teleopCommand = new DriveController();
+		
         // instantiate the command used for the autonomous period
+		autonomousCommand = new AutoStack3();
+		
+		//autonomousCommand = new TrackYellowTote();
+		//autonomousCommand = new DriveRelative(0.75, -1.0, 0.75); // turn left
+		//autonomousCommand = new DriveRelative(0.2, 0.0, 0.1); // forward 1 inch
+		//autonomousCommand = new SetLiftHeight(SetLiftHeight.level.LVL2, SetLiftHeight.offset.LOWER);
     }
 
     public void autonomousInit() {
-        // schedule the autonomous command (example)
+    	if (teleopCommand != null) teleopCommand.cancel();
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -48,7 +73,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-        oi.operator.tron();
+        //oi.operator.tron();
     }
 
     public void teleopInit() {
@@ -57,6 +82,8 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        Robot.visionPIDSubsystem.disable();
+        teleopCommand.start();
         oi.operator.disableLights();
     }
 
@@ -73,7 +100,7 @@ public class Robot extends IterativeRobot {
         	min = val;
         
        // System.out.println("Max: " + max + " Min: " + min);
-        System.out.println(oi.operator.getManualY());
+       // System.out.println(oi.operator.getManualY());
     }
     
     /**
@@ -81,12 +108,13 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-
+    	if (teleopCommand != null) teleopCommand.cancel();
+    	if (autonomousCommand != null) autonomousCommand.cancel();
     }
     
 	public void disabledPeriodic() {
-		//oi.operator.pacman();
-		System.out.println("3: " + oi.operator.getPotAngle());
+		oi.operator.pacman();
+		//System.out.println("3: " + oi.operator.getPotAngle());
 	}
     
     /**

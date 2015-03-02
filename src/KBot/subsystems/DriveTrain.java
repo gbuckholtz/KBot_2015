@@ -1,8 +1,10 @@
 package KBot.subsystems;
 
-import KBot.Robot;
+//import KBot.Robot;
 import KBot.RobotMap;
 import KBot.commands.DriveController;
+//import edu.wpi.first.wpilibj.Relay.Direction;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -16,7 +18,7 @@ public class DriveTrain extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-    	setDefaultCommand(new DriveController());
+    	//setDefaultCommand(new DriveController());
         //setDefaultCommand(new MySpecialCommand());
     }
     
@@ -36,6 +38,48 @@ public class DriveTrain extends Subsystem {
     		left = -left; right = -right;
     		
     	RobotMap.drive.tankDrive(left, right, true);
+    	
+    	//System.out.println("Encoder: " + RobotMap.driveEncoderLeft.get() + " | EncoderRight: " + RobotMap.driveEncoderRight.get());
+    	if (left>0.2)
+    	{
+    		RobotMap.red.set(Value.kReverse);
+    	} else {
+    		RobotMap.red.set(Value.kForward);
+    	}
+    	if (right>0.2)
+    	{
+    		RobotMap.blue.set(Value.kReverse);
+    	} else {
+    		RobotMap.blue.set(Value.kForward);
+    	}
+    	if (left<0 || right<0)
+    	{
+    		RobotMap.green.set(Value.kReverse);
+    	} else {
+    		RobotMap.green.set(Value.kForward);    		
+    	}
+    }
+    
+    public void driveCurve(double dist, double curve) {
+    	if (dist>0.2)
+    	{
+    		RobotMap.red.set(Value.kReverse);
+    	} else {
+    		RobotMap.red.set(Value.kForward);
+    	}
+    	if (curve>0.2 || curve<-0.2)
+    	{
+    		RobotMap.blue.set(Value.kReverse);
+    	} else {
+    		RobotMap.blue.set(Value.kForward);
+    	}
+    	if (dist<0 )
+    	{
+    		RobotMap.green.set(Value.kReverse);
+    	} else {
+    		RobotMap.green.set(Value.kForward);    		
+    	}
+    	RobotMap.drive.drive(dist, curve);
     }
 }
 

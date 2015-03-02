@@ -3,8 +3,13 @@ package KBot;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+//import edu.wpi.first.wpilibj.Relay.Direction;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Talon;
+//import edu.wpi.first.wpilibj.Talon;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -13,6 +18,9 @@ import edu.wpi.first.wpilibj.Talon;
  * floating around.
  */
 public class RobotMap {
+	//Constants
+	public static final int relayRed = 0, relayGreen = 1, relayBlue = 2;
+	private static final int leftDriveSplice = 2, leftDriveNot = 3, rightDriveSplice = 0, rightDriveNot = 1;
 	
 	//Object Declarations
 	public static CANTalon liftTalon1, liftTalon2, liftTalon3;
@@ -20,29 +28,57 @@ public class RobotMap {
 	public static AnalogPotentiometer wristPot, clawPot;
 	public static Encoder driveEncoderLeft, driveEncoderRight, liftEncoder;
 	public static RobotDrive drive;
-	
-	//PWM Locations
-	private static final int leftDriveSplice = 2, leftDriveNot = 3, rightDriveSplice = 0, rightDriveNot = 1;
+	public static Relay red, green, blue;
+
+	//Network table for vision system
+	public static NetworkTable visionTable= NetworkTable.getTable("SmartDashboard");
     
 	public static void init() 
     {
+		//visionTable = NetworkTable.getTable("SmartDashboard"); //TODO: Trying it here to try to get rid of error
 		//Drive System
 		drive = new RobotDrive(leftDriveSplice, leftDriveNot, rightDriveSplice, rightDriveNot);
-    	driveEncoderLeft = new Encoder(1,2);
-    	driveEncoderRight = new Encoder(3,4);
+    	driveEncoderLeft = new Encoder(0,1);
+    	driveEncoderLeft.setReverseDirection(false);
+    	driveEncoderRight = new Encoder(2,3);
     	drive.setSafetyEnabled(false);
     	
     	//Lifter System
     	liftTalon1 = new CANTalon(1);
     	liftTalon2 = new CANTalon(2);
     	liftTalon3 = new CANTalon(3);
-    	liftEncoder = new Encoder(5,6);
+		liftTalon1.setProfile(0);
+    	liftTalon1.changeControlMode(CANTalon.ControlMode.Position);
+		liftTalon1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		liftTalon1.reverseSensor(true);	// if necessary
+    	liftTalon1.setPID(10.0, 0.0, 0.0);
+
+    	// Set lift talons 2 and 3 to slave themselves to liftTalon1:
+    	liftTalon2.changeControlMode(CANTalon.ControlMode.Follower);
+    	liftTalon2.set(liftTalon1.getDeviceID());
+    	liftTalon2.setPID(1.0, 0.0, 0.0);
+    	liftTalon3.changeControlMode(CANTalon.ControlMode.Follower);
+    	liftTalon3.set(liftTalon1.getDeviceID());
+    	liftTalon3.setPID(1.0, 0.0, 0.0);
+    	
+    	//liftEncoder = new Encoder(5,6); // THIS ENCODER IS ON THE TALONS (1,2 and 3)
     	
     	//Claw System
     	wristTalon = new CANTalon(4);
     	clawTalon = new CANTalon(5);
     	wristPot = new AnalogPotentiometer(1);
     	clawPot = new AnalogPotentiometer(2);
+    	
+    	//Underglow
+    		// kReverse is ON
+    		// kForward is OFF
+    	red = new Relay(relayRed);
+    	green = new Relay(relayGreen);
+    	blue = new Relay(relayBlue);
+    	//red.setDirection(Direction.kReverse);
+    	//green.setDirection(Direction.kReverse);
+    	//blue.setDirection(Direction.kReverse);
+
     }
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:

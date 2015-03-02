@@ -20,10 +20,10 @@ public class OperatorController {
     public static final int OPERATOR_3 = 4;
     public static final int OPERATOR_4 = 5;
     public static final int OPERATOR_5 = 6;
-    public static final int OPERATOR_LOWER = 7;
-    public static final int OPERATOR_RAISE = 8;
-    public static final int OPERATOR_CLOSE = 9;
-    public static final int OPERATOR_OPEN = 10;
+    public static final int OPERATOR_RAISE = 7;
+    public static final int OPERATOR_LOWER = 8;
+    public static final int OPERATOR_OPEN = 9;
+    public static final int OPERATOR_CLOSE = 10;
     public static final int OPERATOR_OVERRIDE = 11;
     
     //Axes
@@ -267,7 +267,7 @@ public class OperatorController {
     			timer.reset();
     			timerOn = false;
     		}
-    		disableLights();
+    		disableLights();			
     	}
     	else if(!getOverride())
     	{

@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import KBot.XboxController;
 import KBot.commands.ClawController;
-import KBot.commands.LiftController;
+import KBot.commands.CloseClaw;
+import KBot.commands.OpenClaw;
+import KBot.commands.MoveLifter;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -34,21 +36,28 @@ public class OI {
 		Button close = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_CLOSE);
 		Button raise = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_RAISE);
 		Button lower = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_LOWER);
-		
-		/*
-		level0.whenPressed(new LiftController(0));
+		Button override = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_OVERRIDE);
+
+		/*level0.whenPressed(new LiftController(0));
 		level1.whenPressed(new LiftController(0));
 		level2.whenPressed(new LiftController(0));
 		level3.whenPressed(new LiftController(0));
 		level4.whenPressed(new LiftController(0));
-		level5.whenPressed(new LiftController(0));
+		level5.whenPressed(new LiftController(0));*/
 		
-		open.whenPressed(new ClawController());
-		close.whenPressed(new ClawController());
-		raise.whenPressed(new LiftController(LiftController.offset.RAISE));
-		lower.whenPressed(new LiftController(LiftController.offset.LOWER));
-		*/
+		/*level0.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL0));
+		level1.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL1));
+		level2.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL2));
+		level3.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL3));
+		level4.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL4));
+		level5.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL5));
+
+		open.whenPressed(new OpenClaw());
+		close.whenPressed(new CloseClaw());
+		raise.whenPressed(new SetLiftHeight(SetLiftHeight.offset.RAISE));
+		lower.whenPressed(new SetLiftHeight(SetLiftHeight.offset.LOWER));
 		
+		//TODO: override.whileHeld(new LiftManualOverride());*/
 	}
 
 	

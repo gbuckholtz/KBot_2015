@@ -1,7 +1,6 @@
 package KBot.commands;
 
 import KBot.Robot;
-import KBot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -11,14 +10,14 @@ public class DriveController extends Command {
 
     public DriveController() 
     {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	requires(Robot.drivetrain);
+    	requires(Robot.wrist);
     }
 
     // Called just before this Command runs the first time
     protected void initialize()
     {	
+    	Robot.drivetrain.driveCurve(0.0, 0.0);	// stop
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -30,6 +29,8 @@ public class DriveController extends Command {
     	boolean rightTrigger = Robot.oi.rightDriver.getTrigger();
     
     	Robot.drivetrain.drive(left,right,leftTrigger,rightTrigger);
+    	
+    	Robot.wrist.setAngle(Robot.oi.operator.getPotAngle()); //TODO: my need to math this
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -41,11 +42,13 @@ public class DriveController extends Command {
     // Called once after isFinished returns true
     protected void end() 
     {
+    	Robot.drivetrain.driveCurve(0.0, 0.0);	// stop
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() 
     {
+    	end();
     }
 }
