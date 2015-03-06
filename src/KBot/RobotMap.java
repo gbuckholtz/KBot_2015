@@ -1,7 +1,9 @@
 package KBot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
@@ -29,6 +31,8 @@ public class RobotMap {
 	public static Encoder driveEncoderLeft, driveEncoderRight, liftEncoder;
 	public static RobotDrive drive;
 	public static Relay red, green, blue;
+	public static DigitalInput autoModeInput[];
+	public static AnalogInput autoTimerInput;
 
 	//Network table for vision system
 	public static NetworkTable visionTable= NetworkTable.getTable("SmartDashboard");
@@ -78,7 +82,13 @@ public class RobotMap {
     	//red.setDirection(Direction.kReverse);
     	//green.setDirection(Direction.kReverse);
     	//blue.setDirection(Direction.kReverse);
+    	
+    	for (int i=0; i<15; i++)
+    	{
+    		autoModeInput[i] = new DigitalInput(10+i);		//  10 - 25 are on the MXP
+    	}
 
+    	autoTimerInput = new AnalogInput(4);			// 4 - 7 are on the MXP
     }
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:

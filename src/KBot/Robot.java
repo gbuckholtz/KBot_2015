@@ -2,7 +2,14 @@
 package KBot;
 
 import KBot.subsystems.Vision;
+import KBot.commands.AutoBinAndTote;
+import KBot.commands.AutoBinThief;
+import KBot.commands.AutoJustDrive;
+import KBot.commands.AutoOneBin;
+import KBot.commands.AutoStack2;
+import KBot.commands.AutoStack2NoVision;
 import KBot.commands.AutoStack3;
+import KBot.commands.AutoStack3NoVision;
 import KBot.commands.DriveController;
 import KBot.commands.DriveRelative;
 import KBot.commands.MoveLifter;
@@ -55,7 +62,43 @@ public class Robot extends IterativeRobot {
 		teleopCommand = new DriveController();
 		
         // instantiate the command used for the autonomous period
-		autonomousCommand = new AutoStack3();
+		
+		// autoModeInputs 0, 1, 8 and 9 are not hooked up yet
+		autonomousCommand = new AutoJustDrive();	// Default if no switches set
+		
+		boolean useVision = RobotMap.autoModeInput[7].get();
+		
+		if (RobotMap.autoModeInput[6].get()) {
+			// Get a bin from the center wall
+			autonomousCommand = new AutoBinThief();
+		}
+		
+		if (RobotMap.autoModeInput[2].get()) {
+			// Grab bin and get out of the way
+			autonomousCommand = new AutoOneBin();
+		}
+		if (RobotMap.autoModeInput[3].get()) {
+			// Take one bin and one tote
+			autonomousCommand = new AutoBinAndTote();
+		}
+		if (RobotMap.autoModeInput[4].get()) {
+			// Take bin and two totes
+			if (useVision) {
+				autonomousCommand = new AutoStack2();
+			} else {
+				autonomousCommand = new AutoStack2NoVision();
+			}
+		}
+		if (RobotMap.autoModeInput[5].get()) {
+			// Take bin and three totes
+			if (useVision) {
+				autonomousCommand = new AutoStack3();
+			} else {
+				autonomousCommand = new AutoStack3NoVision();
+			}
+		}
+		
+		// Testing overrides:
 		
 		//autonomousCommand = new TrackYellowTote();
 		//autonomousCommand = new DriveRelative(0.75, -1.0, 0.75); // turn left
@@ -113,8 +156,16 @@ public class Robot extends IterativeRobot {
     }
     
 	public void disabledPeriodic() {
+		int count=0;
 		oi.operator.pacman();
 		//System.out.println("3: " + oi.operator.getPotAngle());
+		if (++count%20==0)
+		{
+			for (int i=0; i<15; i++) {
+				System.out.print(RobotMap.autoModeInput[i].get()?"1 ":"0 ");
+			}
+			System.out.println(RobotMap.autoTimerInput.getValue());
+		}
 	}
     
     /**
