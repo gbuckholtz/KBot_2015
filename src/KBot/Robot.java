@@ -43,6 +43,11 @@ public class Robot extends IterativeRobot {
 	double max = -1024, min = 1024;
 
     Command autonomousCommand, teleopCommand;
+    
+	static private boolean autonomousEnabled = false;
+	static public boolean isTeleop(){
+		return !autonomousEnabled;
+	}
 
     /**
      * This function is run when the robot is first started up and should be
@@ -52,36 +57,39 @@ public class Robot extends IterativeRobot {
     	RobotMap.init();
     	visionSubsystem = new Vision();
     	visionPIDSubsystem = new VisionPIDDrive();
-		oi = new OI();
 		drivetrain = new DriveTrain();
 		lift = new Lift();
 		claw = new Claw();
 		wrist = new Wrist();		
+		oi = new OI();
 		
         // instantiate the command used for the teleop period
 		teleopCommand = new DriveController();
 		
         // instantiate the command used for the autonomous period
 		
+		setAutonomousMode();
+    }
+    private void setAutonomousMode() {
 		// autoModeInputs 0, 1, 8 and 9 are not hooked up yet
 		autonomousCommand = new AutoJustDrive();	// Default if no switches set
 		
-		boolean useVision = RobotMap.autoModeInput[7].get();
+		boolean useVision = !RobotMap.autoModeInput[7].get();
 		
-		if (RobotMap.autoModeInput[6].get()) {
+		if (!RobotMap.autoModeInput[6].get()) {
 			// Get a bin from the center wall
 			autonomousCommand = new AutoBinThief();
 		}
 		
-		if (RobotMap.autoModeInput[2].get()) {
+		if (!RobotMap.autoModeInput[2].get()) {
 			// Grab bin and get out of the way
 			autonomousCommand = new AutoOneBin();
 		}
-		if (RobotMap.autoModeInput[3].get()) {
+		if (!RobotMap.autoModeInput[3].get()) {
 			// Take one bin and one tote
 			autonomousCommand = new AutoBinAndTote();
 		}
-		if (RobotMap.autoModeInput[4].get()) {
+		if (!RobotMap.autoModeInput[4].get()) {
 			// Take bin and two totes
 			if (useVision) {
 				autonomousCommand = new AutoStack2();
@@ -89,7 +97,7 @@ public class Robot extends IterativeRobot {
 				autonomousCommand = new AutoStack2NoVision();
 			}
 		}
-		if (RobotMap.autoModeInput[5].get()) {
+		if (!RobotMap.autoModeInput[5].get()) {
 			// Take bin and three totes
 			if (useVision) {
 				autonomousCommand = new AutoStack3();
@@ -105,9 +113,10 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = new DriveRelative(0.2, 0.0, 0.1); // forward 1 inch
 		//autonomousCommand = new SetLiftHeight(SetLiftHeight.level.LVL2, SetLiftHeight.offset.LOWER);
     }
-
     public void autonomousInit() {
-    	if (teleopCommand != null) teleopCommand.cancel();
+        autonomousEnabled = isAutonomous();
+		setAutonomousMode();
+        if (teleopCommand != null) teleopCommand.cancel();
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -115,6 +124,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+        autonomousEnabled = isAutonomous();
         Scheduler.getInstance().run();
         //oi.operator.tron();
     }
@@ -124,6 +134,7 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
+        autonomousEnabled = isAutonomous();
         if (autonomousCommand != null) autonomousCommand.cancel();
         Robot.visionPIDSubsystem.disable();
         teleopCommand.start();
@@ -134,6 +145,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+        autonomousEnabled = isAutonomous();
         Scheduler.getInstance().run();
         oi.operator.tron();
         double val = oi.operator.m_joy.getRawAxis(2);
@@ -151,27 +163,41 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
+        autonomousEnabled = isAutonomous();
     	if (teleopCommand != null) teleopCommand.cancel();
     	if (autonomousCommand != null) autonomousCommand.cancel();
     }
     
+	int count=0;
 	public void disabledPeriodic() {
-		int count=0;
+        autonomousEnabled = isAutonomous();
 		oi.operator.pacman();
 		//System.out.println("3: " + oi.operator.getPotAngle());
-		if (++count%20==0)
+		
+		/*if (++count%20==0)
 		{
-			for (int i=0; i<15; i++) {
-				System.out.print(RobotMap.autoModeInput[i].get()?"1 ":"0 ");
+			String msg="";
+			for (int i=14; i>=0; i--) {
+				msg+=(RobotMap.autoModeInput[i].get()?"1 ":"0 ");
 			}
-			System.out.println(RobotMap.autoTimerInput.getValue());
-		}
+			msg+=(RobotMap.autoTimerInput.getValue());
+			msg+=autonomousCommand.toString();
+			System.out.println(msg);
+		}*/
 	}
+
+    /**
+     * This function is called once before test mode
+     */
+    public void testInit() {
+        autonomousEnabled = isAutonomous();
+    }
     
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
+        autonomousEnabled = isAutonomous();
         LiveWindow.run();
         oi.operator.tron();
     }

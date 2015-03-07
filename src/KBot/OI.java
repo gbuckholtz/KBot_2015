@@ -8,6 +8,8 @@ import KBot.commands.ClawController;
 import KBot.commands.CloseClaw;
 import KBot.commands.OpenClaw;
 import KBot.commands.MoveLifter;
+import KBot.subsystems.Lift;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -45,19 +47,19 @@ public class OI {
 		level4.whenPressed(new LiftController(0));
 		level5.whenPressed(new LiftController(0));*/
 		
-		/*level0.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL0));
-		level1.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL1));
-		level2.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL2));
-		level3.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL3));
-		level4.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL4));
-		level5.whenPressed(new SetLiftHeight(SetLiftHeight.level.LVL5));
+		level0.whenPressed(new MoveLifter(Lift.level.LVL0));
+		level1.whenPressed(new MoveLifter(Lift.level.LVL1));
+		level2.whenPressed(new MoveLifter(Lift.level.LVL2));
+		level3.whenPressed(new MoveLifter(Lift.level.LVL3));
+		level4.whenPressed(new MoveLifter(Lift.level.LVL4));
+		level5.whenPressed(new MoveLifter(Lift.level.LVL5));
 
 		open.whenPressed(new OpenClaw());
 		close.whenPressed(new CloseClaw());
-		raise.whenPressed(new SetLiftHeight(SetLiftHeight.offset.RAISE));
-		lower.whenPressed(new SetLiftHeight(SetLiftHeight.offset.LOWER));
+		raise.whenPressed(new MoveLifter(Lift.offset.RAISE));
+		lower.whenPressed(new MoveLifter(Lift.offset.LOWER));
 		
-		//TODO: override.whileHeld(new LiftManualOverride());*/
+		//TODO: override.whileHeld(new LiftManualOverride());
 	}
 
 	

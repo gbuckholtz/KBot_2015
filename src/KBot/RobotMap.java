@@ -61,9 +61,11 @@ public class RobotMap {
     	liftTalon2.changeControlMode(CANTalon.ControlMode.Follower);
     	liftTalon2.set(liftTalon1.getDeviceID());
     	liftTalon2.setPID(1.0, 0.0, 0.0);
+    	liftTalon2.enableControl();		// Not sure if this is needed
     	liftTalon3.changeControlMode(CANTalon.ControlMode.Follower);
     	liftTalon3.set(liftTalon1.getDeviceID());
     	liftTalon3.setPID(1.0, 0.0, 0.0);
+    	liftTalon3.enableControl();		// Not sure if this is needed
     	
     	//liftEncoder = new Encoder(5,6); // THIS ENCODER IS ON THE TALONS (1,2 and 3)
     	
@@ -83,6 +85,7 @@ public class RobotMap {
     	//green.setDirection(Direction.kReverse);
     	//blue.setDirection(Direction.kReverse);
     	
+    	autoModeInput = new DigitalInput[15];
     	for (int i=0; i<15; i++)
     	{
     		autoModeInput[i] = new DigitalInput(10+i);		//  10 - 25 are on the MXP

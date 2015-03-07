@@ -14,18 +14,22 @@ public class Vision extends Subsystem {
     // here. Call these from Commands.
 	public double blobCount=0;
 	public double boxSize=0;
-	public double boxX=0;
-	public double boxY=0;
+	public double boxX=160;
+	public double boxY=120;
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new GetVisionData());
     }
     public void getVisionData() {
-    	blobCount = RobotMap.visionTable.getNumber("BLOB_COUNT");
-    	boxSize = RobotMap.visionTable.getNumber("COG_BOX_SIZE");
-    	boxX = RobotMap.visionTable.getNumber("COG_X");
-    	boxY = RobotMap.visionTable.getNumber("COG_Y");
+    	if (RobotMap.visionTable.containsKey("BLOB_COUNT"))
+    		blobCount = RobotMap.visionTable.getNumber("BLOB_COUNT");
+    	if (RobotMap.visionTable.containsKey("COG_BOX_SIZE"))
+    		boxSize = RobotMap.visionTable.getNumber("COG_BOX_SIZE");
+    	if (RobotMap.visionTable.containsKey("COG_X"))
+    		boxX = RobotMap.visionTable.getNumber("COG_X");
+    	if (RobotMap.visionTable.containsKey("COG_Y"))
+    		boxY = RobotMap.visionTable.getNumber("COG_Y");
 
     }
 }

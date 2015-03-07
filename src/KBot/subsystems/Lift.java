@@ -16,6 +16,12 @@ public class Lift extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
+	public static enum offset { RAISE, LOWER };
+	public static enum level { LVL0, LVL1, LVL2, LVL3, LVL4, LVL5 };
+	private final static double ENCODER_COUNTS_PER_INCH = 9.5;	//TODO: tune this by trial and error
+	
+	private int setpoint=0, relative=0;
+	
 	// WE ONLY NEED TO CONTROL liftTalon1, since the other 2 are slaved to it using FOLLOWER mode.
 	
 	public Lift()
@@ -26,17 +32,64 @@ public class Lift extends Subsystem {
 		RobotMap.liftTalon1.reverseSensor(true);	// encoder readout is currently opposite to motor direction
 		//RobotMap.liftTalon1.setVoltageRampRate(6);		// use if necessary
 		RobotMap.liftTalon1.setPID(10.0, 0.0, 0.0);
+		resetEncoders();
+		RobotMap.liftTalon1.set(0);
 		RobotMap.liftTalon1.enableControl();
 	}
 
     public void initDefaultCommand() 
     {
-    	setDefaultCommand (new MoveLifter()); //TODO: Maybe change to drive down onto lower limit switch and reset encoders
+    }
+    
+    public void setSpeed(int speed)
+    {
+		RobotMap.liftTalon1.changeControlMode(ControlMode.Voltage);
+		RobotMap.liftTalon1.set(speed);
     }
 
-    public void setPosition(int pos)
+    public void setPosition(level lvl, offset off)
     {
-    	RobotMap.liftTalon1.set(pos);
+		if (Robot.oi.operator.getOverride()  && Robot.isTeleop()) {
+			System.out.println("MoveLifter commmand ignored due to Manual Override");
+			return;
+		}
+		if (RobotMap.liftTalon1.getControlMode() == ControlMode.Voltage) {
+			RobotMap.liftTalon1.changeControlMode(ControlMode.Position);
+		} 
+		if (lvl!=null) {
+			switch (lvl) {
+			case LVL0:
+				this.setpoint = 0;
+				break;
+			case LVL1:
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12);
+				break;
+			case LVL2:
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*2);
+				break;
+			case LVL3:
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*3);
+				break;
+			case LVL4:
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*4);
+				break;
+			case LVL5:
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*5);
+				break;
+			}
+		}
+		if (off!=null) {
+			switch (off) {
+			case RAISE:
+				this.relative = (int)(ENCODER_COUNTS_PER_INCH*9);
+				break;
+			case LOWER:
+				this.relative = 0;
+				break;
+			}			
+		}
+
+		RobotMap.liftTalon1.set(setpoint+relative);
     }
     
     public void resetEncoders()
@@ -60,7 +113,7 @@ public class Lift extends Subsystem {
     
     public boolean isLimitSwitchFaulted()
     {
-    	return RobotMap.liftTalon1.getFaultForLim()!=0 || RobotMap.liftTalon1.getFaultRevLim()!=0;
+    	return false; //RobotMap.liftTalon1.getFaultForLim()!=0 || RobotMap.liftTalon1.getFaultRevLim()!=0;
     }
     
     public int getPIDError()

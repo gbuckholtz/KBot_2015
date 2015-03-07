@@ -22,8 +22,6 @@ public class VisionPIDDrive extends PIDSubsystem {
     }
     
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
     }
     
     public double returnPIDInput() {

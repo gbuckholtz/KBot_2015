@@ -28,8 +28,6 @@ public class Wrist extends Subsystem {
 	}
 
     public void initDefaultCommand() {
-    	setDefaultCommand (new MoveWrist(0.0));	//TODO: do we want 0.0?
-
     }
     
     public void setAngle(double angle)

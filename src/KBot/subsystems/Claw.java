@@ -29,7 +29,6 @@ public class Claw extends Subsystem {
 	
     public void initDefaultCommand() 
     {
-    	setDefaultCommand (new OpenClaw());
     }
     
     public void setAngle(int angle)
