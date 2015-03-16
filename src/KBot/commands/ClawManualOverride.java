@@ -7,21 +7,22 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class WristManualOverride extends Command {
+public class ClawManualOverride extends Command {
 
-    public WristManualOverride() {
-        requires(Robot.wrist);
+    public ClawManualOverride() {
+        requires(Robot.claw);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.wrist.setVoltageMode();
+    	Robot.claw.setVoltageMode();
+    	System.out.println("ClawManualOverride init");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.wrist.setSpeed(Robot.oi.operator.getManualX());
-    	System.out.println(RobotMap.wristTalon.getAnalogInPosition());
+    	Robot.claw.setSpeed(Robot.oi.operator.getManualX());
+    	System.out.println(RobotMap.clawTalon.getAnalogInPosition());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,7 +32,7 @@ public class WristManualOverride extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.wrist.setSpeed(0);
+    	Robot.claw.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
