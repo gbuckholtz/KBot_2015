@@ -61,7 +61,7 @@ public class Claw extends Subsystem {
     
     public boolean isLimitSwitchFaulted()
     {
-    	return RobotMap.clawTalon.getFaultForLim()!=0 || RobotMap.clawTalon.getFaultRevLim()!=0;
+    	return false; //TODO: put back:  RobotMap.clawTalon.getFaultForLim()!=0 || RobotMap.clawTalon.getFaultRevLim()!=0;
     }
     
     public boolean isFinished()

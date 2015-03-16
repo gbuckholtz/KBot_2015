@@ -30,6 +30,7 @@ public class DriveController extends Command {
     
     	Robot.drivetrain.drive(left,right,leftTrigger,rightTrigger);
     	
+    	//TODO: Move this into the wrist's default command
     	Robot.wrist.setAngle(Robot.oi.operator.getPotAngle()); //TODO: my need to math this
     }
 

@@ -40,7 +40,6 @@ public class Robot extends IterativeRobot {
 	public static Wrist wrist;
 	public static Vision visionSubsystem;
 	public static VisionPIDDrive visionPIDSubsystem;
-	double max = -1024, min = 1024;
 
     Command autonomousCommand, teleopCommand;
     
@@ -67,14 +66,16 @@ public class Robot extends IterativeRobot {
 		teleopCommand = new DriveController();
 		
         // instantiate the command used for the autonomous period
-		
 		setAutonomousMode();
     }
+    
     private void setAutonomousMode() {
 		// autoModeInputs 0, 1, 8 and 9 are not hooked up yet
 		autonomousCommand = new AutoJustDrive();	// Default if no switches set
 		
 		boolean useVision = !RobotMap.autoModeInput[7].get();
+		
+		//Change this to a loop with a switch instead of all these if statements
 		
 		if (!RobotMap.autoModeInput[6].get()) {
 			// Get a bin from the center wall
@@ -130,14 +131,10 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
         autonomousEnabled = isAutonomous();
         if (autonomousCommand != null) autonomousCommand.cancel();
         Robot.visionPIDSubsystem.disable();
-        teleopCommand.start();
+        //teleopCommand.start();
         oi.operator.disableLights();
     }
 
@@ -148,14 +145,6 @@ public class Robot extends IterativeRobot {
         autonomousEnabled = isAutonomous();
         Scheduler.getInstance().run();
         oi.operator.tron();
-        double val = oi.operator.m_joy.getRawAxis(2);
-        if (val > max)
-        	max = val;
-        if (val < min)
-        	min = val;
-        
-       // System.out.println("Max: " + max + " Min: " + min);
-       // System.out.println(oi.operator.getManualY());
     }
     
     /**

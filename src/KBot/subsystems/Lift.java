@@ -18,7 +18,7 @@ public class Lift extends Subsystem {
 	
 	public static enum offset { RAISE, LOWER };
 	public static enum level { LVL0, LVL1, LVL2, LVL3, LVL4, LVL5 };
-	private final static double ENCODER_COUNTS_PER_INCH = 9.5;	//TODO: tune this by trial and error
+	private final static double ENCODER_COUNTS_PER_INCH = 50;	//TODO: tune this by trial and error
 	
 	private int setpoint=0, relative=0;
 	
@@ -26,6 +26,8 @@ public class Lift extends Subsystem {
 	
 	public Lift()
 	{
+		//The profile setting and control mode was set in the RobotMap. This function should only reset the encoders and define the PID values
+		// for all three talon  motors.
 		RobotMap.liftTalon1.setProfile(0);
 		RobotMap.liftTalon1.changeControlMode(ControlMode.Position);
 		RobotMap.liftTalon1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
@@ -41,9 +43,15 @@ public class Lift extends Subsystem {
     {
     }
     
-    public void setSpeed(int speed)
+    public void setSpeed(double speed)
     {
-		RobotMap.liftTalon1.changeControlMode(ControlMode.Voltage);
+    	//Calling this at 50Hz is a bad idea. Preferably set this somewhere else, like at the start of a command
+    	//Better?? -Mr. Wood
+    	//(I was worried about other commands changing the control mode.)
+		if (RobotMap.liftTalon1.getControlMode() == ControlMode.Position) {
+			RobotMap.liftTalon1.changeControlMode(ControlMode.Voltage);
+			RobotMap.liftTalon1.enableControl();	//is it needed?
+		} 
 		RobotMap.liftTalon1.set(speed);
     }
 
@@ -62,26 +70,26 @@ public class Lift extends Subsystem {
 				this.setpoint = 0;
 				break;
 			case LVL1:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12);
+				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12);
 				break;
 			case LVL2:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*2);
+				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12*2);
 				break;
 			case LVL3:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*3);
+				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12*3);
 				break;
 			case LVL4:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*4);
+				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12*4);
 				break;
 			case LVL5:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*5);
+				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12*5);
 				break;
 			}
 		}
 		if (off!=null) {
 			switch (off) {
 			case RAISE:
-				this.relative = (int)(ENCODER_COUNTS_PER_INCH*9);
+				this.relative = -(int)(ENCODER_COUNTS_PER_INCH*9);
 				break;
 			case LOWER:
 				this.relative = 0;
@@ -113,7 +121,7 @@ public class Lift extends Subsystem {
     
     public boolean isLimitSwitchFaulted()
     {
-    	return false; //RobotMap.liftTalon1.getFaultForLim()!=0 || RobotMap.liftTalon1.getFaultRevLim()!=0;
+    	return false; //TODO: put back:  RobotMap.liftTalon1.getFaultForLim()!=0 || RobotMap.liftTalon1.getFaultRevLim()!=0;
     }
     
     public int getPIDError()

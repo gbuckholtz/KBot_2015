@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import KBot.XboxController;
 import KBot.commands.ClawController;
 import KBot.commands.CloseClaw;
+import KBot.commands.LiftManualOverride;
 import KBot.commands.OpenClaw;
 import KBot.commands.MoveLifter;
 import KBot.subsystems.Lift;
@@ -59,7 +60,7 @@ public class OI {
 		raise.whenPressed(new MoveLifter(Lift.offset.RAISE));
 		lower.whenPressed(new MoveLifter(Lift.offset.LOWER));
 		
-		//TODO: override.whileHeld(new LiftManualOverride());
+		override.whileHeld(new LiftManualOverride());
 	}
 
 	

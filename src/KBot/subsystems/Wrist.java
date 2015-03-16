@@ -65,7 +65,7 @@ public class Wrist extends Subsystem {
     
     public boolean isLimitSwitchFaulted()
     {
-    	return RobotMap.wristTalon.getFaultForLim()!=0 || RobotMap.wristTalon.getFaultRevLim()!=0;
+    	return false; //TODO: put back:  RobotMap.wristTalon.getFaultForLim()!=0 || RobotMap.wristTalon.getFaultRevLim()!=0;
     }
     
     public boolean isFinished()

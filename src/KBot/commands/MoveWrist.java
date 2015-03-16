@@ -6,7 +6,19 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
+/*
+ * The stuff that uses the enum was planned for autonomous mode to be able to abstractly define where the wrist should move.
+ * However, it is not used at all in teleop mode, and so should be placed into its own command. This command should only
+ * do the mapping between the operator console potentiometer and the wrist potentiometer - that is, this command should move the wrist
+ * to a desired angle instead of to an enumerated position. It should be set as the default command for the subsystem and refactored to
+ * "Wrist Controller"
+ * 
+ * Another concern is that the enum will not work as well as we'd like. The code that moves the wrist to an angle should be generated first,
+ * then we can simply run the "MoveWristToAngle" function from the autonomous command and pass it the angle we need. Different position variales
+ * can be secified to achieve this result.
+ */
 public class MoveWrist extends Command {
+	//MOVE ENUM TO SUBSYSTEM
 	private final static double TIMEOUT = 1.0;			// second.
 	public enum position { UP, DOWN, LEVEL };
 	private position pos;
@@ -31,6 +43,8 @@ public class MoveWrist extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	//MOVE TO SUBSYSTEM AND USE ABSTRACTED FUNCTION CALL HERE
+    	
     	if (Robot.wrist.isLimitSwitchFaulted()) {
 			Robot.wrist.driveOffLimitSwitch();
 		} else {

@@ -12,6 +12,11 @@ import edu.wpi.first.wpilibj.command.Command;
  * to maintain the position.
  * Other commands using the lift should make sure they disable PID!
  */
+
+/*
+ * The threshold variable and cycle count should be moved into the subsystem. A command should only run the functions and should not define
+ * how the functions work
+ */
 public class MoveLifter extends Command {
 	private Lift.level level=null;
 	private Lift.offset offset=null;
@@ -19,7 +24,7 @@ public class MoveLifter extends Command {
 	private int cycleCount=0;
 	private boolean firstCycle=true;
 	
-	private final static double TIMEOUT = 1.0;			// seconds. Timeout for any lift command
+	private final static double TIMEOUT = 2.0;			// seconds. Timeout for any lift command
 	private final static int THRESHOLD = 10;	
 	private final static int STABLE_CYCLE_COUNT = 10;	// How many cycles output must be within THRESHOLD before being considered "finished"
 	
