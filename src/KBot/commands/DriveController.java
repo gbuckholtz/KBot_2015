@@ -11,7 +11,6 @@ public class DriveController extends Command {
     public DriveController() 
     {
     	requires(Robot.drivetrain);
-    	requires(Robot.wrist);
     }
 
     // Called just before this Command runs the first time
@@ -29,9 +28,6 @@ public class DriveController extends Command {
     	boolean rightTrigger = Robot.oi.rightDriver.getTrigger();
     
     	Robot.drivetrain.drive(left,right,leftTrigger,rightTrigger);
-    	
-    	//TODO: Move this into the wrist's default command
-    	Robot.wrist.setAngle(Robot.oi.operator.getPotAngle()); //TODO: my need to math this
     }
 
     // Make this return true when this Command no longer needs to run execute()

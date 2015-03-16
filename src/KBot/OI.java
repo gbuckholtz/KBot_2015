@@ -9,6 +9,7 @@ import KBot.commands.CloseClaw;
 import KBot.commands.LiftManualOverride;
 import KBot.commands.OpenClaw;
 import KBot.commands.MoveLifter;
+import KBot.commands.WristManualOverride;
 import KBot.subsystems.Lift;
 
 /**
@@ -61,6 +62,7 @@ public class OI {
 		lower.whenPressed(new MoveLifter(Lift.offset.LOWER));
 		
 		override.whileHeld(new LiftManualOverride());
+		override.whileHeld(new WristManualOverride());
 	}
 
 	

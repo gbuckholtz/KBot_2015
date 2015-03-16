@@ -31,8 +31,10 @@ public class Lift extends Subsystem {
 		RobotMap.liftTalon1.setProfile(0);
 		RobotMap.liftTalon1.changeControlMode(ControlMode.Position);
 		RobotMap.liftTalon1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		RobotMap.liftTalon1.reverseSensor(true);	// encoder readout is currently opposite to motor direction
-		//RobotMap.liftTalon1.setVoltageRampRate(6);		// use if necessary
+		RobotMap.liftTalon1.reverseOutput(true); 	// Make it so that positive is up. FOR CLOSED LOOP ONLY.
+		RobotMap.liftTalon1.reverseSensor(false);	// encoder readout is currently opposite to motor direction
+		RobotMap.liftTalon1.setVoltageRampRate(2.0);		// use if necessary
+		RobotMap.liftTalon1.setCloseLoopRampRate(2.0);
 		RobotMap.liftTalon1.setPID(10.0, 0.0, 0.0);
 		resetEncoders();
 		RobotMap.liftTalon1.set(0);
@@ -48,20 +50,20 @@ public class Lift extends Subsystem {
     	//Calling this at 50Hz is a bad idea. Preferably set this somewhere else, like at the start of a command
     	//Better?? -Mr. Wood
     	//(I was worried about other commands changing the control mode.)
-		if (RobotMap.liftTalon1.getControlMode() == ControlMode.Position) {
-			RobotMap.liftTalon1.changeControlMode(ControlMode.Voltage);
+		if (RobotMap.liftTalon1.getControlMode() != ControlMode.PercentVbus) {
+			RobotMap.liftTalon1.changeControlMode(ControlMode.PercentVbus);
 			RobotMap.liftTalon1.enableControl();	//is it needed?
 		} 
-		RobotMap.liftTalon1.set(speed);
+		RobotMap.liftTalon1.set(-speed); // Make positive up
     }
 
     public void setPosition(level lvl, offset off)
     {
 		if (Robot.oi.operator.getOverride()  && Robot.isTeleop()) {
-			System.out.println("MoveLifter commmand ignored due to Manual Override");
+			System.out.println("Lift ignored a command due to Manual Override");
 			return;
 		}
-		if (RobotMap.liftTalon1.getControlMode() == ControlMode.Voltage) {
+		if (RobotMap.liftTalon1.getControlMode() != ControlMode.Position) {
 			RobotMap.liftTalon1.changeControlMode(ControlMode.Position);
 		} 
 		if (lvl!=null) {
@@ -70,26 +72,26 @@ public class Lift extends Subsystem {
 				this.setpoint = 0;
 				break;
 			case LVL1:
-				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12);
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12);
 				break;
 			case LVL2:
-				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12*2);
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*2);
 				break;
 			case LVL3:
-				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12*3);
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*3);
 				break;
 			case LVL4:
-				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12*4);
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*4);
 				break;
 			case LVL5:
-				this.setpoint = -(int)(ENCODER_COUNTS_PER_INCH*12*5);
+				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*5);
 				break;
 			}
 		}
 		if (off!=null) {
 			switch (off) {
 			case RAISE:
-				this.relative = -(int)(ENCODER_COUNTS_PER_INCH*9);
+				this.relative = (int)(ENCODER_COUNTS_PER_INCH*9);
 				break;
 			case LOWER:
 				this.relative = 0;
@@ -109,7 +111,7 @@ public class Lift extends Subsystem {
     
     public void stop()
     {
-		if (RobotMap.liftTalon1.getControlMode() == ControlMode.Voltage) {
+		if (RobotMap.liftTalon1.getControlMode() != ControlMode.Position) {
 			RobotMap.liftTalon1.changeControlMode(ControlMode.Position);
 		} 
 
@@ -136,8 +138,8 @@ public class Lift extends Subsystem {
 			
 			if (RobotMap.liftTalon1.isFwdLimitSwitchClosed()) {
 				// switch to voltage control, disable the switch and move back:
-				if (RobotMap.liftTalon1.getControlMode() != ControlMode.Voltage) {
-					RobotMap.liftTalon1.changeControlMode(ControlMode.Voltage);
+				if (RobotMap.liftTalon1.getControlMode() != ControlMode.PercentVbus) {
+					RobotMap.liftTalon1.changeControlMode(ControlMode.PercentVbus);
 				}
 				RobotMap.liftTalon1.enableLimitSwitch(false, false);
 				RobotMap.liftTalon1.set(-0.25);
@@ -155,8 +157,8 @@ public class Lift extends Subsystem {
 			
 			if (RobotMap.liftTalon1.isRevLimitSwitchClosed()) {
 				// switch to voltage control, disable the switch and move forward
-				if (RobotMap.liftTalon1.getControlMode() != ControlMode.Voltage) {
-					RobotMap.liftTalon1.changeControlMode(ControlMode.Voltage);
+				if (RobotMap.liftTalon1.getControlMode() != ControlMode.PercentVbus) {
+					RobotMap.liftTalon1.changeControlMode(ControlMode.PercentVbus);
 				}
 				RobotMap.liftTalon1.enableLimitSwitch(false, false);
 				RobotMap.liftTalon1.set(0.25);

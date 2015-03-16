@@ -1,23 +1,27 @@
 package KBot.commands;
 
+import KBot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class WristContoller extends Command {
+public class WristController extends Command {
 
-    public WristContoller() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    public WristController() {
+        requires(Robot.wrist);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.wrist.setPositionMode();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	double potAngle=Robot.oi.operator.getPotAngle();
+    	double angle=1.015*potAngle-58.362;			// Calculated by linear regression
+    	Robot.wrist.setAngle(angle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -27,6 +31,7 @@ public class WristContoller extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	// Leave PID on to maintain current position
     }
 
     // Called when another command which requires one or more of the same

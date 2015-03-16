@@ -49,7 +49,7 @@ public class Claw extends Subsystem {
 
     public void stop()
     {
-		if (RobotMap.clawTalon.getControlMode() == ControlMode.Voltage) {
+		if (RobotMap.clawTalon.getControlMode() != ControlMode.Position) {
 			RobotMap.clawTalon.changeControlMode(ControlMode.Position);
 		} 
 
@@ -81,8 +81,8 @@ public class Claw extends Subsystem {
 			
 			if (RobotMap.clawTalon.isFwdLimitSwitchClosed()) {
 				// switch to voltage control, disable the switch and move back:
-				if (RobotMap.clawTalon.getControlMode() != ControlMode.Voltage) {
-					RobotMap.clawTalon.changeControlMode(ControlMode.Voltage);
+				if (RobotMap.clawTalon.getControlMode() != ControlMode.PercentVbus) {
+					RobotMap.clawTalon.changeControlMode(ControlMode.PercentVbus);
 				}
 				RobotMap.clawTalon.enableLimitSwitch(false, false);
 				RobotMap.clawTalon.set(-0.25);
@@ -100,8 +100,8 @@ public class Claw extends Subsystem {
 			
 			if (RobotMap.clawTalon.isRevLimitSwitchClosed()) {
 				// switch to voltage control, disable the switch and move forward
-				if (RobotMap.clawTalon.getControlMode() != ControlMode.Voltage) {
-					RobotMap.clawTalon.changeControlMode(ControlMode.Voltage);
+				if (RobotMap.clawTalon.getControlMode() != ControlMode.PercentVbus) {
+					RobotMap.clawTalon.changeControlMode(ControlMode.PercentVbus);
 				}
 				RobotMap.clawTalon.enableLimitSwitch(false, false);
 				RobotMap.clawTalon.set(0.25);

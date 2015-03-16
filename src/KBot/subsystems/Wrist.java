@@ -2,8 +2,10 @@ package KBot.subsystems;
 
 import KBot.Robot;
 import KBot.RobotMap;
+import KBot.commands.GetVisionData;
 import KBot.commands.MoveWrist;
 import KBot.commands.OpenClaw;
+import KBot.commands.WristController;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -23,16 +25,21 @@ public class Wrist extends Subsystem {
 		RobotMap.wristTalon.setFeedbackDevice(FeedbackDevice.AnalogPot);
 		//RobotMap.wristTalon.reverseSensor(true);	// if needed
 		//RobotMap.wristTalon.setVoltageRampRate(6);		// use if necessary
-		RobotMap.wristTalon.setPID(1.0, 0.0, 0.0);
-		RobotMap.wristTalon.enableControl();
+		RobotMap.wristTalon.setPID(0.0, 0.0, 0.0); //TODO: make p=1.0 or something
+		RobotMap.wristTalon.enableControl(); //TODO: make this enableControl
 	}
 
     public void initDefaultCommand() {
+        setDefaultCommand(new WristController());   	
     }
     
     public void setAngle(double angle)
     {
-    	double pos = angle;				//TODO: calculate setpoint from angle here
+		if (Robot.oi.operator.getOverride()  && Robot.isTeleop()) {
+			System.out.println("Wrist ignored a command due to Manual Override");
+			return;
+		}
+		double pos = angle;				//TODO: calculate setpoint from angle here
     	RobotMap.wristTalon.set(pos);
     }
     
@@ -50,10 +57,28 @@ public class Wrist extends Subsystem {
     {
     	setAngle(5);			//TODO: trial and error!!
     }
-
+    
+    public void setVoltageMode()
+    {
+		RobotMap.wristTalon.changeControlMode(ControlMode.PercentVbus);
+		RobotMap.wristTalon.enableControl();	//is it needed?
+		RobotMap.wristTalon.set(0);
+    }
+    
+    public void setPositionMode()
+    {
+		RobotMap.wristTalon.changeControlMode(ControlMode.Position);
+		RobotMap.wristTalon.enableControl();	//is it needed?
+		RobotMap.wristTalon.set(RobotMap.wristTalon.getPosition());	// set setpoint to current position
+    }
+    
+    public void setSpeed(double speed)
+    {
+		RobotMap.wristTalon.set(-speed); // Make positive up
+    }
     public void stop()
     {
-		if (RobotMap.wristTalon.getControlMode() == ControlMode.Voltage) {
+		if (RobotMap.wristTalon.getControlMode() != ControlMode.Position) {
 			RobotMap.wristTalon.changeControlMode(ControlMode.Position);
 		} 
 
@@ -85,8 +110,8 @@ public class Wrist extends Subsystem {
 			
 			if (RobotMap.wristTalon.isFwdLimitSwitchClosed()) {
 				// switch to voltage control, disable the switch and move back:
-				if (RobotMap.wristTalon.getControlMode() != ControlMode.Voltage) {
-					RobotMap.wristTalon.changeControlMode(ControlMode.Voltage);
+				if (RobotMap.wristTalon.getControlMode() != ControlMode.PercentVbus) {
+					RobotMap.wristTalon.changeControlMode(ControlMode.PercentVbus);
 				}
 				RobotMap.wristTalon.enableLimitSwitch(false, false);
 				RobotMap.wristTalon.set(-0.25);
@@ -104,8 +129,8 @@ public class Wrist extends Subsystem {
 			
 			if (RobotMap.wristTalon.isRevLimitSwitchClosed()) {
 				// switch to voltage control, disable the switch and move forward
-				if (RobotMap.wristTalon.getControlMode() != ControlMode.Voltage) {
-					RobotMap.wristTalon.changeControlMode(ControlMode.Voltage);
+				if (RobotMap.wristTalon.getControlMode() != ControlMode.PercentVbus) {
+					RobotMap.wristTalon.changeControlMode(ControlMode.PercentVbus);
 				}
 				RobotMap.wristTalon.enableLimitSwitch(false, false);
 				RobotMap.wristTalon.set(0.25);
