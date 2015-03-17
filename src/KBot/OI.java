@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import KBot.XboxController;
 import KBot.commands.ClawController;
+import KBot.commands.ClawManualOverride;
 import KBot.commands.CloseClaw;
 import KBot.commands.LiftManualOverride;
 import KBot.commands.OpenClaw;
@@ -62,7 +63,8 @@ public class OI {
 		lower.whenPressed(new MoveLifter(Lift.offset.LOWER));
 		
 		override.whileHeld(new LiftManualOverride());
-		override.whileHeld(new WristManualOverride());
+		override.whileHeld(new WristManualOverride());	// ONLY USE WRIST OR CLAW AS THEY BOTH USE THE X-AXIS OF THE JOYSTICK
+		//override.whileHeld(new ClawManualOverride());
 	}
 
 	

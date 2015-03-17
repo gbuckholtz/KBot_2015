@@ -23,7 +23,7 @@ public class Claw extends Subsystem {
 		RobotMap.clawTalon.setFeedbackDevice(FeedbackDevice.AnalogPot);
 		//RobotMap.clawTalon.reverseSensor(true);	// if needed
 		//RobotMap.clawTalon.setVoltageRampRate(6);		// use if necessary
-		RobotMap.clawTalon.setPID(1.0, 0.0, 0.0);
+		RobotMap.clawTalon.setPID(0.0, 0.0, 0.0);
 		RobotMap.clawTalon.enableControl();
 	}
 	
@@ -58,7 +58,25 @@ public class Claw extends Subsystem {
 		
 		// Leave PID on to maintain the position.
 	}
+    public void setVoltageMode()
+    {
+		RobotMap.clawTalon.changeControlMode(ControlMode.PercentVbus);
+		RobotMap.clawTalon.enableControl();	//is it needed?
+		RobotMap.clawTalon.set(0);
+    }
     
+    public void setPositionMode()
+    {
+		RobotMap.clawTalon.changeControlMode(ControlMode.Position);
+		RobotMap.clawTalon.enableControl();	//is it needed?
+		RobotMap.clawTalon.set(RobotMap.clawTalon.getPosition());	// set setpoint to current position
+    }
+    
+    public void setSpeed(double speed)
+    {
+		RobotMap.clawTalon.set(speed);
+	}
+     
     public boolean isLimitSwitchFaulted()
     {
     	return false; //TODO: put back:  RobotMap.clawTalon.getFaultForLim()!=0 || RobotMap.clawTalon.getFaultRevLim()!=0;

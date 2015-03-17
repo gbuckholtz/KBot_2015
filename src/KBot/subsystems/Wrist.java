@@ -76,6 +76,7 @@ public class Wrist extends Subsystem {
     {
 		RobotMap.wristTalon.set(-speed); // Make positive up
     }
+    
     public void stop()
     {
 		if (RobotMap.wristTalon.getControlMode() != ControlMode.Position) {
