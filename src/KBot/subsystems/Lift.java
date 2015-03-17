@@ -33,9 +33,9 @@ public class Lift extends Subsystem {
 		RobotMap.liftTalon1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		RobotMap.liftTalon1.reverseOutput(true); 	// Make it so that positive is up. FOR CLOSED LOOP ONLY.
 		RobotMap.liftTalon1.reverseSensor(false);	// encoder readout is currently opposite to motor direction
-		RobotMap.liftTalon1.setVoltageRampRate(2.0);		// use if necessary
-		RobotMap.liftTalon1.setCloseLoopRampRate(2.0);
-		RobotMap.liftTalon1.setPID(10.0, 0.0, 0.0);
+		RobotMap.liftTalon1.setVoltageRampRate(6.0);		// use if necessary
+		RobotMap.liftTalon1.setCloseLoopRampRate(6.0);
+		RobotMap.liftTalon1.setPID(5.0, 0.0, 0.0);
 		resetEncoders();
 		RobotMap.liftTalon1.set(0);
 		RobotMap.liftTalon1.enableControl();

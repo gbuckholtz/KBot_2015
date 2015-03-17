@@ -117,7 +117,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         autonomousEnabled = isAutonomous();
 		setAutonomousMode();
-        if (teleopCommand != null) teleopCommand.cancel();
+        if (teleopCommand != null) teleopCommand.cancel();		//TODO: should not be needed
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -133,7 +133,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         autonomousEnabled = isAutonomous();
         if (autonomousCommand != null) autonomousCommand.cancel();
-        Robot.visionPIDSubsystem.disable();
+        Robot.visionPIDSubsystem.disable();		//TODO: should not be needed (in the end command of TrackYellowTote)
         //teleopCommand.start();
         oi.operator.disableLights();
     }
