@@ -21,7 +21,7 @@ public class CloseClaw extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if (Robot.claw.isLimitSwitchFaulted()) {
-			Robot.claw.driveOffLimitSwitch();
+			//
 		} else {
 			// No faults, so close it
 			Robot.claw.close();
@@ -39,7 +39,7 @@ public class CloseClaw extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-		Robot.claw.stop();
+		//Robot.claw.stop(); //Leave PID running
    }
 
     // Called when another command which requires one or more of the same
