@@ -39,31 +39,25 @@ public class MoveWrist extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.wrist.setPositionMode();    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//MOVE TO SUBSYSTEM AND USE ABSTRACTED FUNCTION CALL HERE
-    	
-    	if (Robot.wrist.isLimitSwitchFaulted()) {
-			//
+		if (pos==null) {
+			// pos is null, so move to specific angle
+			Robot.wrist.setAngle(angle);
 		} else {
-			// No faults, so move it
-			if (pos==null) {
-				// pos is null, so move to specific angle
-				Robot.wrist.setAngle(angle);
-			} else {
-				switch (pos) {
-				case UP:
-					Robot.wrist.up();
-					break;
-				case DOWN:
-					Robot.wrist.down();
-					break;
-				case LEVEL:
-					Robot.wrist.level();
-					break;
-				}
+			switch (pos) {
+			case UP:
+				Robot.wrist.up();
+				break;
+			case DOWN:
+				Robot.wrist.down();
+				break;
+			case LEVEL:
+				Robot.wrist.level();
+				break;
 			}
 		}
     }

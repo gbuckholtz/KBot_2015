@@ -15,16 +15,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Claw extends Subsystem {
 	
 	private final static int THRESHOLD = 4;	
+	private final static double OPEN_VALUE = 930.0;	
+	private final static double CLOSED_VALUE = 1018.0;	
     
 	public Claw()
 	{
 		RobotMap.clawTalon.setProfile(0);
 		RobotMap.clawTalon.changeControlMode(ControlMode.Position);
 		RobotMap.clawTalon.setFeedbackDevice(FeedbackDevice.AnalogPot);
-		RobotMap.clawTalon.reverseOutput(true); 	// Make it so that positive is up. FOR CLOSED LOOP ONLY.
+		RobotMap.clawTalon.reverseOutput(true); 	// Make it so that positive is open. FOR CLOSED LOOP ONLY.
 		RobotMap.clawTalon.reverseSensor(false);	// encoder readout is currently opposite to motor direction
-		RobotMap.clawTalon.setVoltageRampRate(12);		// use if necessary
-		RobotMap.clawTalon.setCloseLoopRampRate(12);
+		RobotMap.clawTalon.setVoltageRampRate(0);		// use if necessary
+		RobotMap.clawTalon.setCloseLoopRampRate(0);
 		RobotMap.clawTalon.setPID(24.0, 0.001, 15.0);
 		RobotMap.clawTalon.enableControl();
 	}
@@ -33,21 +35,20 @@ public class Claw extends Subsystem {
     {
     }
     
-    public void setAngle(double angle)
+    public void set(double value)
     {
-    	double pos = angle;				//TODO: calculate setpoint from angle here
-    	RobotMap.clawTalon.set(pos);
+    	RobotMap.clawTalon.set(value);
+    	System.out.println("Claw set to:"+value);
     }
     
     public void open()
     {
-    	setAngle(930.0);
-    	System.out.println("Claw adc ="+RobotMap.clawTalon.getAnalogInRaw());
+    	set(OPEN_VALUE);
     }
   
     public void close()
     {
-    	setAngle(1014.0);
+    	set(CLOSED_VALUE);
     }
 
     public void stop()
@@ -74,11 +75,6 @@ public class Claw extends Subsystem {
 		RobotMap.clawTalon.enableControl();	//is it needed?
 		RobotMap.clawTalon.set(RobotMap.clawTalon.getPosition());	// set setpoint to current position
     }
-    
-    public void setSpeed(double speed)
-    {
-		RobotMap.clawTalon.set(speed);
-	}
      
     public boolean isLimitSwitchFaulted()
     {

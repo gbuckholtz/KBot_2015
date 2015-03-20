@@ -25,8 +25,8 @@ public class Wrist extends Subsystem {
 		RobotMap.wristTalon.setFeedbackDevice(FeedbackDevice.AnalogPot);
 		//RobotMap.wristTalon.reverseSensor(true);	// NOT needed
 		RobotMap.wristTalon.setVoltageRampRate(24);		// use if necessary
-		RobotMap.wristTalon.setCloseLoopRampRate(24);
-		RobotMap.wristTalon.setPID(60.0, 0.001, 10.0);
+		RobotMap.wristTalon.setCloseLoopRampRate(0);
+		RobotMap.wristTalon.setPID(50.0, 0.0001, 2.0);
 		RobotMap.wristTalon.enableControl();
 	}
 
@@ -40,7 +40,7 @@ public class Wrist extends Subsystem {
 			//System.out.println("Wrist ignored a command due to Manual Override");
 			return;
 		}
-		double pos = 650+2*angle;
+		double pos = 756+angle*1.411;
     	RobotMap.wristTalon.set(pos);
     	//System.out.println("Wrist set to angle adc="+pos);
     }

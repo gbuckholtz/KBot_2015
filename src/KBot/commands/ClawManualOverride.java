@@ -21,7 +21,8 @@ public class ClawManualOverride extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.claw.setSpeed(Robot.oi.operator.getManualX());
+    	Robot.claw.set(Robot.oi.operator.getManualX());
+    	System.out.println("Claw pot value:"+RobotMap.clawTalon.getAnalogInRaw());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,7 +32,7 @@ public class ClawManualOverride extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.claw.setSpeed(0);
+    	Robot.claw.set(0);
     }
 
     // Called when another command which requires one or more of the same
