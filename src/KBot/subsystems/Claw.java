@@ -77,11 +77,13 @@ public class Claw extends Subsystem {
 		RobotMap.clawTalon.set(speed);
 	}
      
+    //This may not be necessary depending on if the limit switches act the way we want them to
     public boolean isLimitSwitchFaulted()
     {
     	return false; //TODO: put back:  RobotMap.clawTalon.getFaultForLim()!=0 || RobotMap.clawTalon.getFaultRevLim()!=0;
     }
     
+    // Rename to OnTarget to fit with convention
     public boolean isFinished()
     {
     	return RobotMap.clawTalon.getClosedLoopError()<THRESHOLD;
@@ -92,6 +94,7 @@ public class Claw extends Subsystem {
     	return RobotMap.clawTalon.getClosedLoopError();
     }
     
+    //This may not be necessary if the limit switches allow us to reverse
     public void driveOffLimitSwitch()
     {
 		if (RobotMap.clawTalon.getFaultForLim()!=0) {

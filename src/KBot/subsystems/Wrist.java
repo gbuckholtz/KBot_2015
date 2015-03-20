@@ -35,6 +35,7 @@ public class Wrist extends Subsystem {
     
     public void setAngle(double angle)
     {
+    	// This can be removed - the WristManualOverride controls the wrist's speed
 		if (Robot.oi.operator.getOverride()  && Robot.isTeleop()) {
 			System.out.println("Wrist ignored a command due to Manual Override");
 			return;
@@ -43,6 +44,8 @@ public class Wrist extends Subsystem {
     	RobotMap.wristTalon.set(pos);
     }
     
+    //I don't think the wrist should have specific "up" or "level" methods. The setAngle method should work enough, which means this
+    // can be removed.
     public void up()
     {
     	setAngle(180);			//TODO: trial and error!!
@@ -94,6 +97,7 @@ public class Wrist extends Subsystem {
     	return false; //TODO: put back:  RobotMap.wristTalon.getFaultForLim()!=0 || RobotMap.wristTalon.getFaultRevLim()!=0;
     }
     
+    // Rename to OnTarget to keep with convention
     public boolean isFinished()
     {
     	return RobotMap.wristTalon.getClosedLoopError()<THRESHOLD;
@@ -104,6 +108,7 @@ public class Wrist extends Subsystem {
     	return RobotMap.wristTalon.getClosedLoopError();
     }
     
+    //This my not be necessary if the limit switch stops us from driving too far
     public void driveOffLimitSwitch()
     {
 		if (RobotMap.wristTalon.getFaultForLim()!=0) {

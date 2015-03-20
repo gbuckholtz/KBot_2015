@@ -59,6 +59,7 @@ public class Lift extends Subsystem {
 
     public void setPosition(level lvl, offset off)
     {
+    	//This should stay, since the override will not cancel the ability of other buttons to run this code
 		if (Robot.oi.operator.getOverride()  && Robot.isTeleop()) {
 			System.out.println("Lift ignored a command due to Manual Override");
 			return;
@@ -131,6 +132,7 @@ public class Lift extends Subsystem {
     	return RobotMap.liftTalon1.getClosedLoopError();
     }
     
+    //This can probably be removed if the limit switches allow us to drive in reverse
     public void driveOffLimitSwitch()
     {
 		if (RobotMap.liftTalon1.getFaultForLim()!=0) {

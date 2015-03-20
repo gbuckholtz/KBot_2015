@@ -23,9 +23,9 @@ public class DriveTrain extends Subsystem {
     
     public void drive(double left, double right, boolean leftTrigger, boolean rightTrigger)
     {
-    	if (Math.abs(left) < 0.01)
+    	if (Math.abs(left) < DEADBAND)
     		left = 0;
-    	if (Math.abs(right) < 0.01)
+    	if (Math.abs(right) < DEADBAND)
     		right = 0;
     	
     	if(leftTrigger)
