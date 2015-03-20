@@ -23,10 +23,11 @@ public class Wrist extends Subsystem {
 		RobotMap.wristTalon.setProfile(0);
 		RobotMap.wristTalon.changeControlMode(ControlMode.Position);
 		RobotMap.wristTalon.setFeedbackDevice(FeedbackDevice.AnalogPot);
-		//RobotMap.wristTalon.reverseSensor(true);	// if needed
-		//RobotMap.wristTalon.setVoltageRampRate(6);		// use if necessary
-		RobotMap.wristTalon.setPID(0.0, 0.0, 0.0); //TODO: make p=1.0 or something
-		RobotMap.wristTalon.enableControl(); //TODO: make this enableControl
+		//RobotMap.wristTalon.reverseSensor(true);	// NOT needed
+		RobotMap.wristTalon.setVoltageRampRate(24);		// use if necessary
+		RobotMap.wristTalon.setCloseLoopRampRate(24);
+		RobotMap.wristTalon.setPID(60.0, 0.001, 10.0);
+		RobotMap.wristTalon.enableControl();
 	}
 
     public void initDefaultCommand() {
@@ -37,28 +38,32 @@ public class Wrist extends Subsystem {
     {
     	// This can be removed - the WristManualOverride controls the wrist's speed
 		if (Robot.oi.operator.getOverride()  && Robot.isTeleop()) {
-			System.out.println("Wrist ignored a command due to Manual Override");
+			//System.out.println("Wrist ignored a command due to Manual Override");
 			return;
 		}
-		double pos = angle;				//TODO: calculate setpoint from angle here
+		double pos = 650+2*angle;
     	RobotMap.wristTalon.set(pos);
+    	//System.out.println("Wrist set to angle adc="+pos);
     }
     
     //I don't think the wrist should have specific "up" or "level" methods. The setAngle method should work enough, which means this
     // can be removed.
+    // For autonomous I think it should ... it makes more sense to have the values for these "fixed" positions in one place in the sub-system
+    // than spread out in a whole load of places in different autonomous modes.  It could be done as constants or an enum if you think that
+    // would be better?
     public void up()
     {
-    	setAngle(180);			//TODO: trial and error!!
+    	setAngle(105);
     }
     
     public void level()
     {
-    	setAngle(20);			//TODO: trial and error!!
+    	setAngle(0);
     }
 
     public void down()
     {
-    	setAngle(5);			//TODO: trial and error!!
+    	setAngle(-30);	
     }
     
     public void setVoltageMode()
@@ -106,49 +111,6 @@ public class Wrist extends Subsystem {
     public int getPIDError()
     {
     	return RobotMap.wristTalon.getClosedLoopError();
-    }
-    
-    //This my not be necessary if the limit switch stops us from driving too far
-    public void driveOffLimitSwitch()
-    {
-		if (RobotMap.wristTalon.getFaultForLim()!=0) {
-			// Forward limit switch fault:
-			
-			if (RobotMap.wristTalon.isFwdLimitSwitchClosed()) {
-				// switch to voltage control, disable the switch and move back:
-				if (RobotMap.wristTalon.getControlMode() != ControlMode.PercentVbus) {
-					RobotMap.wristTalon.changeControlMode(ControlMode.PercentVbus);
-				}
-				RobotMap.wristTalon.enableLimitSwitch(false, false);
-				RobotMap.wristTalon.set(-0.25);
-			} else {
-				// the limit switch is off now, so restore position control mode and enable switch
-				RobotMap.wristTalon.changeControlMode(ControlMode.Position);
-				RobotMap.wristTalon.enableLimitSwitch(true, true);
-				//stop so we don't drive onto the switch again
-				Robot.wrist.stop();
-				// and wait for fault to clear
-			}
-			
-		} else if (RobotMap.wristTalon.getFaultRevLim()!=0) {
-			// Reverse limit switch fault:
-			
-			if (RobotMap.wristTalon.isRevLimitSwitchClosed()) {
-				// switch to voltage control, disable the switch and move forward
-				if (RobotMap.wristTalon.getControlMode() != ControlMode.PercentVbus) {
-					RobotMap.wristTalon.changeControlMode(ControlMode.PercentVbus);
-				}
-				RobotMap.wristTalon.enableLimitSwitch(false, false);
-				RobotMap.wristTalon.set(0.25);
-			} else {
-				// the limit switch is off now, so restore position control mode and enable switch
-				RobotMap.wristTalon.changeControlMode(ControlMode.Position);
-				RobotMap.wristTalon.enableLimitSwitch(true, true);
-				//stop so we don't drive onto the switch again
-				Robot.wrist.stop();
-				// and wait for fault to clear
-			}
-		}    	
     }
 }
 

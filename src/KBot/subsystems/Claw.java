@@ -14,16 +14,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Claw extends Subsystem {
 	
-	private final static int THRESHOLD = 10;	
+	private final static int THRESHOLD = 4;	
     
 	public Claw()
 	{
 		RobotMap.clawTalon.setProfile(0);
 		RobotMap.clawTalon.changeControlMode(ControlMode.Position);
 		RobotMap.clawTalon.setFeedbackDevice(FeedbackDevice.AnalogPot);
-		//RobotMap.clawTalon.reverseSensor(true);	// if needed
-		//RobotMap.clawTalon.setVoltageRampRate(6);		// use if necessary
-		RobotMap.clawTalon.setPID(0.0, 0.0, 0.0);
+		RobotMap.clawTalon.reverseOutput(true); 	// Make it so that positive is up. FOR CLOSED LOOP ONLY.
+		RobotMap.clawTalon.reverseSensor(false);	// encoder readout is currently opposite to motor direction
+		RobotMap.clawTalon.setVoltageRampRate(12);		// use if necessary
+		RobotMap.clawTalon.setCloseLoopRampRate(12);
+		RobotMap.clawTalon.setPID(24.0, 0.001, 15.0);
 		RobotMap.clawTalon.enableControl();
 	}
 	
@@ -31,20 +33,21 @@ public class Claw extends Subsystem {
     {
     }
     
-    public void setAngle(int angle)
+    public void setAngle(double angle)
     {
-    	int pos = angle;				//TODO: calculate setpoint from angle here
+    	double pos = angle;				//TODO: calculate setpoint from angle here
     	RobotMap.clawTalon.set(pos);
     }
     
     public void open()
     {
-    	setAngle(180);			//TODO: trial and error!!
+    	setAngle(930.0);
+    	System.out.println("Claw adc ="+RobotMap.clawTalon.getAnalogInRaw());
     }
   
     public void close()
     {
-    	setAngle(10);			//TODO: trial and error!!
+    	setAngle(1014.0);
     }
 
     public void stop()
@@ -92,49 +95,6 @@ public class Claw extends Subsystem {
     public int getPIDError()
     {
     	return RobotMap.clawTalon.getClosedLoopError();
-    }
-    
-    //This may not be necessary if the limit switches allow us to reverse
-    public void driveOffLimitSwitch()
-    {
-		if (RobotMap.clawTalon.getFaultForLim()!=0) {
-			// Forward limit switch fault:
-			
-			if (RobotMap.clawTalon.isFwdLimitSwitchClosed()) {
-				// switch to voltage control, disable the switch and move back:
-				if (RobotMap.clawTalon.getControlMode() != ControlMode.PercentVbus) {
-					RobotMap.clawTalon.changeControlMode(ControlMode.PercentVbus);
-				}
-				RobotMap.clawTalon.enableLimitSwitch(false, false);
-				RobotMap.clawTalon.set(-0.25);
-			} else {
-				// the limit switch is off now, so restore position control mode and enable switch
-				RobotMap.clawTalon.changeControlMode(ControlMode.Position);
-				RobotMap.clawTalon.enableLimitSwitch(true, true);
-				//stop so we don't drive onto the switch again
-				Robot.claw.stop();
-				// and wait for fault to clear
-			}
-			
-		} else if (RobotMap.clawTalon.getFaultRevLim()!=0) {
-			// Reverse limit switch fault:
-			
-			if (RobotMap.clawTalon.isRevLimitSwitchClosed()) {
-				// switch to voltage control, disable the switch and move forward
-				if (RobotMap.clawTalon.getControlMode() != ControlMode.PercentVbus) {
-					RobotMap.clawTalon.changeControlMode(ControlMode.PercentVbus);
-				}
-				RobotMap.clawTalon.enableLimitSwitch(false, false);
-				RobotMap.clawTalon.set(0.25);
-			} else {
-				// the limit switch is off now, so restore position control mode and enable switch
-				RobotMap.clawTalon.changeControlMode(ControlMode.Position);
-				RobotMap.clawTalon.enableLimitSwitch(true, true);
-				//stop so we don't drive onto the switch again
-				Robot.claw.stop();
-				// and wait for fault to clear
-			}
-		}    	
     }
 }
 

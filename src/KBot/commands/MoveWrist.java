@@ -46,7 +46,7 @@ public class MoveWrist extends Command {
     	//MOVE TO SUBSYSTEM AND USE ABSTRACTED FUNCTION CALL HERE
     	
     	if (Robot.wrist.isLimitSwitchFaulted()) {
-			Robot.wrist.driveOffLimitSwitch();
+			//
 		} else {
 			// No faults, so move it
 			if (pos==null) {

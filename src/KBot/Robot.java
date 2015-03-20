@@ -58,6 +58,7 @@ public class Robot extends IterativeRobot {
     	visionPIDSubsystem = new VisionPIDDrive();
 		drivetrain = new DriveTrain();
 		lift = new Lift();
+		lift.resetEncoders();
 		claw = new Claw();
 		wrist = new Wrist();		
 		oi = new OI();
@@ -117,6 +118,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         autonomousEnabled = isAutonomous();
 		setAutonomousMode();
+		lift.resetEncoders();
         if (teleopCommand != null) teleopCommand.cancel();		//TODO: should not be needed
         if (autonomousCommand != null) autonomousCommand.start();
     }
@@ -132,6 +134,7 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
         autonomousEnabled = isAutonomous();
+		lift.resetEncoders();	//TODO: remove this
         if (autonomousCommand != null) autonomousCommand.cancel();
         Robot.visionPIDSubsystem.disable();		//TODO: should not be needed (in the end command of TrackYellowTote)
         //teleopCommand.start();
