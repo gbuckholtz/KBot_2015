@@ -38,7 +38,6 @@ public class Claw extends Subsystem {
     public void set(double value)
     {
     	RobotMap.clawTalon.set(value);
-    	System.out.println("Claw set to:"+value);
     }
     
     public void open()
@@ -62,6 +61,7 @@ public class Claw extends Subsystem {
 		
 		// Leave PID on to maintain the position.
 	}
+    
     public void setVoltageMode()
     {
 		RobotMap.clawTalon.changeControlMode(ControlMode.PercentVbus);
@@ -74,6 +74,22 @@ public class Claw extends Subsystem {
 		RobotMap.clawTalon.changeControlMode(ControlMode.Position);
 		RobotMap.clawTalon.enableControl();	//is it needed?
 		RobotMap.clawTalon.set(RobotMap.clawTalon.getPosition());	// set setpoint to current position
+    }
+    
+	private static int overCurrentCount=0;
+    public void checkMotors()
+    {
+    	if (RobotMap.clawTalon.getOutputCurrent()>2.5)
+    		overCurrentCount++;
+    	else
+    		overCurrentCount=0;
+    	if (RobotMap.clawTalon.getAnalogInVelocity()==0 && overCurrentCount>25)
+    	{
+    		// We are stalled, so stop at this point
+    		System.out.println("Claw stalled; telling it to stay at:"+RobotMap.clawTalon.getPosition());
+    		RobotMap.clawTalon.set(RobotMap.clawTalon.getPosition());
+    	}
+		//System.out.println("Claw current="+RobotMap.clawTalon.getOutputCurrent()+" velocity="+RobotMap.clawTalon.getAnalogInVelocity());
     }
      
     //This may not be necessary depending on if the limit switches act the way we want them to

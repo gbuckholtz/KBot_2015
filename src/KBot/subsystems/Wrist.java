@@ -26,7 +26,7 @@ public class Wrist extends Subsystem {
 		//RobotMap.wristTalon.reverseSensor(true);	// NOT needed
 		RobotMap.wristTalon.setVoltageRampRate(24);		// use if necessary
 		RobotMap.wristTalon.setCloseLoopRampRate(0);
-		RobotMap.wristTalon.setPID(50.0, 0.0001, 2.0);
+		RobotMap.wristTalon.setPID(35.0, 0.0001, 2.0);
 		RobotMap.wristTalon.enableControl();
 	}
 
