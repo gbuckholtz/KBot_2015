@@ -14,6 +14,7 @@ public class LiftManualOverride extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.lift.setSpeed(0);
     }
 
     // Called repeatedly when this Command is scheduled to run

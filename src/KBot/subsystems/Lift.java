@@ -174,5 +174,17 @@ public class Lift extends Subsystem {
 			}
 		}    	
     }
+    public void setVoltageMode() 
+    {
+    	RobotMap.liftTalon1.changeControlMode(ControlMode.PercentVbus);
+    	RobotMap.liftTalon2.changeControlMode(ControlMode.PercentVbus);
+    	RobotMap.liftTalon3.changeControlMode(ControlMode.PercentVbus);
+    	RobotMap.liftTalon1.enableControl();
+    	RobotMap.liftTalon2.enableControl();
+    	RobotMap.liftTalon3.enableControl();
+    	RobotMap.liftTalon1.set(0);
+    	RobotMap.liftTalon2.set(0);
+    	RobotMap.liftTalon3.set(0);
+    }
 }
 
