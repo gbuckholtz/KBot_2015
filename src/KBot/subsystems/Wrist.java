@@ -40,7 +40,7 @@ public class Wrist extends Subsystem {
 			//System.out.println("Wrist ignored a command due to Manual Override");
 			return;
 		}
-		double pos = 756+angle*1.411;
+		double pos = 384+angle*3.674;
     	RobotMap.wristTalon.set(pos);
     	//System.out.println("Wrist set to angle adc="+pos);
     }
