@@ -30,7 +30,7 @@ public class CloseClaw extends Command {
 			System.out.println("CloseClaw timed out");
 			return true;
 		}
-		return Robot.claw.isFinished();
+		return Robot.claw.onTarget();
     }
 
     // Called once after isFinished returns true

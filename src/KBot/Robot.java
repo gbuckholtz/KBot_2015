@@ -147,6 +147,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         autonomousEnabled = isAutonomous();
         Robot.claw.checkMotors();
+        Robot.wrist.checkMotors();
         Scheduler.getInstance().run();
         oi.operator.tron();
     }

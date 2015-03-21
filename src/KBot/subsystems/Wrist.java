@@ -97,13 +97,23 @@ public class Wrist extends Subsystem {
 		// Leave PID on to maintain the position.
 	}
     
-    public boolean isLimitSwitchFaulted()
+	private static int overCurrentCount=0;
+    public void checkMotors()
     {
-    	return false; //TODO: put back:  RobotMap.wristTalon.getFaultForLim()!=0 || RobotMap.wristTalon.getFaultRevLim()!=0;
+    	if (RobotMap.wristTalon.getOutputCurrent()>2.5)
+    		overCurrentCount++;
+    	else
+    		overCurrentCount=0;
+    	if (RobotMap.wristTalon.getAnalogInVelocity()==0 && overCurrentCount>25)
+    	{
+    		// We are stalled, so stop at this point
+    		System.out.println("Wrist stalled; telling it to stay at:"+RobotMap.wristTalon.getPosition());
+    		RobotMap.wristTalon.set(RobotMap.wristTalon.getPosition());
+    	}
+		System.out.println("Wrist current="+RobotMap.wristTalon.getOutputCurrent()+" velocity="+RobotMap.wristTalon.getAnalogInVelocity());
     }
     
-    // Rename to OnTarget to keep with convention
-    public boolean isFinished()
+    public boolean onTarget()
     {
     	return RobotMap.wristTalon.getClosedLoopError()<THRESHOLD;
     }

@@ -16,7 +16,7 @@ public class Claw extends Subsystem {
 	
 	private final static int THRESHOLD = 4;	
 	private final static double OPEN_VALUE = 930.0;	
-	private final static double CLOSED_VALUE = 1018.0;	
+	private final static double CLOSED_VALUE = 1023.0;	
     
 	public Claw()
 	{
@@ -91,15 +91,8 @@ public class Claw extends Subsystem {
     	}
 		//System.out.println("Claw current="+RobotMap.clawTalon.getOutputCurrent()+" velocity="+RobotMap.clawTalon.getAnalogInVelocity());
     }
-     
-    //This may not be necessary depending on if the limit switches act the way we want them to
-    public boolean isLimitSwitchFaulted()
-    {
-    	return false; //TODO: put back:  RobotMap.clawTalon.getFaultForLim()!=0 || RobotMap.clawTalon.getFaultRevLim()!=0;
-    }
     
-    // Rename to OnTarget to fit with convention
-    public boolean isFinished()
+    public boolean onTarget()
     {
     	return RobotMap.clawTalon.getClosedLoopError()<THRESHOLD;
     }

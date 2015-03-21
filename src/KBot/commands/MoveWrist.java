@@ -68,7 +68,7 @@ public class MoveWrist extends Command {
 			System.out.println("MoveWrist timed out");
 			return true;
 		}
-		return Robot.wrist.isFinished();
+		return Robot.wrist.onTarget();
     }
 
     // Called once after isFinished returns true
