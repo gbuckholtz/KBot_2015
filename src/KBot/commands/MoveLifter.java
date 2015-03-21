@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /*
  * The threshold variable and cycle count should be moved into the subsystem. A command should only run the functions and should not define
- * how the functions work
+ * how the functions work.
+ * Also, let's rename this to LiftController to keep with our conventions.
  */
 public class MoveLifter extends Command {
 	private Lift.level level=null;

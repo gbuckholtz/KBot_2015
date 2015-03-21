@@ -36,6 +36,7 @@ public class Wrist extends Subsystem {
     
     public void setAngle(double angle)
     {
+    	// This can be removed - the WristManualOverride controls the wrist's speed
 		if (Robot.oi.operator.getOverride()  && Robot.isTeleop()) {
 			//System.out.println("Wrist ignored a command due to Manual Override");
 			return;
@@ -45,6 +46,11 @@ public class Wrist extends Subsystem {
     	//System.out.println("Wrist set to angle adc="+pos);
     }
     
+    //I don't think the wrist should have specific "up" or "level" methods. The setAngle method should work enough, which means this
+    // can be removed.
+    // For autonomous I think it should ... it makes more sense to have the values for these "fixed" positions in one place in the sub-system
+    // than spread out in a whole load of places in different autonomous modes.  It could be done as constants or an enum if you think that
+    // would be better?
     public void up()
     {
     	setAngle(105);
@@ -96,6 +102,7 @@ public class Wrist extends Subsystem {
     	return false; //TODO: put back:  RobotMap.wristTalon.getFaultForLim()!=0 || RobotMap.wristTalon.getFaultRevLim()!=0;
     }
     
+    // Rename to OnTarget to keep with convention
     public boolean isFinished()
     {
     	return RobotMap.wristTalon.getClosedLoopError()<THRESHOLD;
