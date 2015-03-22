@@ -15,6 +15,7 @@ public class WristManualOverride extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("Wrist Manual override init");
     	Robot.wrist.setVoltageMode();
     }
 

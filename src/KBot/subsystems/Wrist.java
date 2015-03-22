@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Wrist extends Subsystem {
 	
-	private final static int THRESHOLD = 10;	
+	private final static double THRESHOLD = 5.0;	
 
 	public Wrist()
 	{
@@ -26,22 +26,22 @@ public class Wrist extends Subsystem {
 		//RobotMap.wristTalon.reverseSensor(true);	// NOT needed
 		RobotMap.wristTalon.setVoltageRampRate(24);		// use if necessary
 		RobotMap.wristTalon.setCloseLoopRampRate(0);
-		RobotMap.wristTalon.setPID(35.0, 0.0001, 2.0);
+		RobotMap.wristTalon.setPID(28.0, 0.001, 4.0, 0.0, 10, 0.0, 0);
 		RobotMap.wristTalon.enableControl();
 	}
 
     public void initDefaultCommand() {
-        setDefaultCommand(new WristController());   	
+        setDefaultCommand(new WristController());   	// Autonomous does not work with this in!!!
     }
     
     public void setAngle(double angle)
     {
     	// This can be removed - the WristManualOverride controls the wrist's speed
 		if (Robot.oi.operator.getOverride()  && Robot.isTeleop()) {
-			//System.out.println("Wrist ignored a command due to Manual Override");
+			System.out.println("Wrist ignored a command due to Manual Override");
 			return;
 		}
-		double pos = 384+angle*3.674;
+		double pos = 419+angle*4.626;
     	RobotMap.wristTalon.set(pos);
     	//System.out.println("Wrist set to angle adc="+pos);
     }
@@ -110,12 +110,12 @@ public class Wrist extends Subsystem {
     		System.out.println("Wrist stalled; telling it to stay at:"+RobotMap.wristTalon.getPosition());
     		RobotMap.wristTalon.set(RobotMap.wristTalon.getPosition());
     	}
-		System.out.println("Wrist current="+RobotMap.wristTalon.getOutputCurrent()+" velocity="+RobotMap.wristTalon.getAnalogInVelocity());
+		//System.out.println("Wrist current="+RobotMap.wristTalon.getOutputCurrent()+" velocity="+RobotMap.wristTalon.getAnalogInVelocity());
     }
     
     public boolean onTarget()
     {
-    	return RobotMap.wristTalon.getClosedLoopError()<THRESHOLD;
+    	return Math.abs(RobotMap.wristTalon.getPosition()-RobotMap.wristTalon.getSetpoint())<THRESHOLD;
     }
     
     public int getPIDError()

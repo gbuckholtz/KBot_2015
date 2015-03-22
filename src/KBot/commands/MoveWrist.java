@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class MoveWrist extends Command {
 	//MOVE ENUM TO SUBSYSTEM
-	private final static double TIMEOUT = 1.0;			// second.
+	private final static double TIMEOUT = 3.0;			// second.
 	public enum position { UP, DOWN, LEVEL };
 	private position pos;
 	private double angle=0;
@@ -39,13 +39,14 @@ public class MoveWrist extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.wrist.setPositionMode();    	
+    	Robot.wrist.setPositionMode();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
 		if (pos==null) {
 			// pos is null, so move to specific angle
+			//System.out.println("MoveWrist angle set to "+angle);
 			Robot.wrist.setAngle(angle);
 		} else {
 			switch (pos) {
@@ -73,12 +74,14 @@ public class MoveWrist extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-		Robot.wrist.stop();
+    	System.out.println("MoveWrist ended");
+		//Robot.wrist.stop();    // Leave PID running
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	System.out.println("MoveWrist interrupted");
     	end();
     }
 }

@@ -27,7 +27,7 @@ public class Claw extends Subsystem {
 		RobotMap.clawTalon.reverseSensor(false);	// encoder readout is currently opposite to motor direction
 		RobotMap.clawTalon.setVoltageRampRate(0);		// use if necessary
 		RobotMap.clawTalon.setCloseLoopRampRate(0);
-		RobotMap.clawTalon.setPID(24.0, 0.001, 15.0);
+		RobotMap.clawTalon.setPID(24.0, 0.001, 5.0, 0.0, 10, 0.0, 0);
 		RobotMap.clawTalon.enableControl();
 	}
 	
@@ -94,7 +94,7 @@ public class Claw extends Subsystem {
     
     public boolean onTarget()
     {
-    	return RobotMap.clawTalon.getClosedLoopError()<THRESHOLD;
+    	return Math.abs(RobotMap.clawTalon.getPosition()-RobotMap.clawTalon.getSetpoint())<THRESHOLD;
     }
     
     public int getPIDError()

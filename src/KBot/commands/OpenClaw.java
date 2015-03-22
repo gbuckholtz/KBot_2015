@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class OpenClaw extends Command {
-	private final static double TIMEOUT = 1.0;			// second.
+	private final static double TIMEOUT = 2.0;			// second.
 
     public OpenClaw() {
 		super("OpenClaw", TIMEOUT);

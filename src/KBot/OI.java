@@ -50,7 +50,6 @@ public class OI {
 		level4.whenPressed(new LiftController(0));
 		level5.whenPressed(new LiftController(0));*/
 		
-		level0.whenPressed(new MoveLifter(Lift.level.LVL0));
 		level1.whenPressed(new MoveLifter(Lift.level.LVL1));
 		level2.whenPressed(new MoveLifter(Lift.level.LVL2));
 		level3.whenPressed(new MoveLifter(Lift.level.LVL3));
@@ -63,8 +62,8 @@ public class OI {
 		lower.whenPressed(new MoveLifter(Lift.offset.LOWER));
 		
 		override.whileHeld(new LiftManualOverride());
-		//override.whileHeld(new WristManualOverride());	// ONLY USE WRIST OR CLAW AS THEY BOTH USE THE X-AXIS OF THE JOYSTICK
-		override.whileHeld(new ClawManualOverride());
+		override.whileHeld(new WristManualOverride());	// ONLY USE WRIST OR CLAW AS THEY BOTH USE THE X-AXIS OF THE JOYSTICK
+		//override.whileHeld(new ClawManualOverride());
 	}
 
 	

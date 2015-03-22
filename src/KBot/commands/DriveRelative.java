@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveRelative extends Command {
-	private double dist, curve;
+	private double speed, curve;
 	
-    public DriveRelative(double dist, double curve, double time) {
+    public DriveRelative(double speed, double curve, double time) {
 		super("DriveRelative",time);
         // Use requires() here to declare subsystem dependencies
     	requires(Robot.drivetrain);
-    	this.dist=dist;
+    	this.speed=speed;
     	this.curve=curve;
     }
 
@@ -23,7 +23,7 @@ public class DriveRelative extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.driveCurve(dist, curve);
+    	Robot.drivetrain.driveCurve(speed, curve);
     }
 
     // Make this return true when this Command no longer needs to run execute()

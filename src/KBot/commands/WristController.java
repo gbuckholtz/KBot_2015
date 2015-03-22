@@ -19,9 +19,12 @@ public class WristController extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double potAngle=Robot.oi.operator.getPotAngle();
-    	double angle=1.015*potAngle-58.362;			// Calculated by linear regression
-    	Robot.wrist.setAngle(angle);
+    	if (Robot.isTeleop())
+    	{
+    		double potAngle=Robot.oi.operator.getPotAngle();
+    		double angle=1.015*potAngle-58.362;			// Calculated by linear regression
+    		Robot.wrist.setAngle(angle);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,5 +40,6 @@ public class WristController extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	System.out.println("Wrist controller interrupted");
     }
 }

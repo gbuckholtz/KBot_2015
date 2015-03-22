@@ -59,8 +59,8 @@ public class DriveTrain extends Subsystem {
     	}
     }
     
-    public void driveCurve(double dist, double curve) {
-    	if (dist>0.2)
+    public void driveCurve(double speed, double curve) {
+    	if (speed>0.2)
     	{
     		RobotMap.red.set(Value.kReverse);
     	} else {
@@ -72,13 +72,13 @@ public class DriveTrain extends Subsystem {
     	} else {
     		RobotMap.blue.set(Value.kForward);
     	}
-    	if (dist<0 )
+    	if (speed<0 )
     	{
     		RobotMap.green.set(Value.kReverse);
     	} else {
     		RobotMap.green.set(Value.kForward);    		
     	}
-    	RobotMap.drive.drive(dist, curve);
+    	RobotMap.drive.drive(speed, curve);
     }
 }
 

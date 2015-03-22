@@ -10,9 +10,12 @@ import KBot.commands.AutoStack2;
 import KBot.commands.AutoStack2NoVision;
 import KBot.commands.AutoStack3;
 import KBot.commands.AutoStack3NoVision;
+import KBot.commands.AutoToteNoLift;
 import KBot.commands.DriveController;
 import KBot.commands.DriveRelative;
 import KBot.commands.MoveLifter;
+import KBot.commands.MoveWrist;
+import KBot.commands.OpenClaw;
 import KBot.commands.TrackYellowTote;
 import KBot.subsystems.Claw;
 import KBot.subsystems.DriveTrain;
@@ -67,12 +70,12 @@ public class Robot extends IterativeRobot {
 		teleopCommand = new DriveController();
 		
         // instantiate the command used for the autonomous period
-		setAutonomousMode();
+		//setAutonomousMode();
     }
     
     private void setAutonomousMode() {
 		// autoModeInputs 0, 1, 8 and 9 are not hooked up yet
-		autonomousCommand = new AutoJustDrive();	// Default if no switches set
+		/*autonomousCommand = new AutoJustDrive();	// Default if no switches set
 		
 		boolean useVision = !RobotMap.autoModeInput[7].get();
 		
@@ -106,7 +109,7 @@ public class Robot extends IterativeRobot {
 			} else {
 				autonomousCommand = new AutoStack3NoVision();
 			}
-		}
+		}*/
 		
 		// Testing overrides:
 		
@@ -114,13 +117,20 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = new DriveRelative(0.75, -1.0, 0.75); // turn left
 		//autonomousCommand = new DriveRelative(0.2, 0.0, 0.1); // forward 1 inch
 		//autonomousCommand = new SetLiftHeight(SetLiftHeight.level.LVL2, SetLiftHeight.offset.LOWER);
+		//autonomousCommand = new MoveWrist(-36.5);
+		autonomousCommand = new AutoToteNoLift();
     }
+    
     public void autonomousInit() {
         autonomousEnabled = isAutonomous();
 		setAutonomousMode();
 		lift.resetEncoders();
         if (teleopCommand != null) teleopCommand.cancel();		//TODO: should not be needed
-        if (autonomousCommand != null) autonomousCommand.start();
+        if (autonomousCommand != null)
+        {
+        	System.out.println("starting autonomous command");
+        	autonomousCommand.start();
+        }
     }
 
     /**
@@ -150,6 +160,7 @@ public class Robot extends IterativeRobot {
         Robot.wrist.checkMotors();
         Scheduler.getInstance().run();
         oi.operator.tron();
+        //System.out.println("Wrist Pot: " + (RobotMap.wristPot.get()/3.674-384) + " | Operator Pot: " + oi.operator.getPotAngle());
     }
     
     /**
@@ -166,6 +177,7 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
         autonomousEnabled = isAutonomous();
 		oi.operator.pacman();
+		//System.out.println("Wrist Pot: " + RobotMap.wristPot.get() + " | Operator Pot: " + oi.operator.getPotAngle());
 		//System.out.println("3: " + oi.operator.getPotAngle());
 		
 		/*if (++count%20==0)
