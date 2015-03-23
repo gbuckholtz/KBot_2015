@@ -149,6 +149,7 @@ public class Robot extends IterativeRobot {
         Robot.visionPIDSubsystem.disable();		//TODO: should not be needed (in the end command of TrackYellowTote)
         //teleopCommand.start();
         oi.operator.disableLights();
+        oi.initializeOverrideButtons();
     }
 
     /**

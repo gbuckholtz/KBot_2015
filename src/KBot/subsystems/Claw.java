@@ -17,6 +17,7 @@ public class Claw extends Subsystem {
 	private final static int THRESHOLD = 4;	
 	private final static double OPEN_VALUE = 930.0;	
 	private final static double CLOSED_VALUE = 1023.0;	
+	private static boolean isOpen = false;
     
 	public Claw()
 	{
@@ -37,17 +38,22 @@ public class Claw extends Subsystem {
     
     public void set(double value)
     {
-    	RobotMap.clawTalon.set(value);
+    	if (!Robot.wrist.isWristUp())
+    		RobotMap.clawTalon.set(value);
+    	else
+    		System.out.println("Can't Open Claw; Wrist is Up.");
     }
     
     public void open()
     {
     	set(OPEN_VALUE);
+    	isOpen = true;
     }
   
     public void close()
     {
     	set(CLOSED_VALUE);
+    	isOpen = false;
     }
 
     public void stop()
@@ -56,7 +62,7 @@ public class Claw extends Subsystem {
 			RobotMap.clawTalon.changeControlMode(ControlMode.Position);
 		} 
 
-		RobotMap.clawTalon.set(RobotMap.clawTalon.getPosition());	// set setpoint to current position
+		set(RobotMap.clawTalon.getPosition());	// set setpoint to current position
 		RobotMap.clawTalon.ClearIaccum();							// clear built up error term
 		
 		// Leave PID on to maintain the position.
@@ -66,14 +72,14 @@ public class Claw extends Subsystem {
     {
 		RobotMap.clawTalon.changeControlMode(ControlMode.PercentVbus);
 		RobotMap.clawTalon.enableControl();	//is it needed?
-		RobotMap.clawTalon.set(0);
+		set(0);
     }
     
     public void setPositionMode()
     {
 		RobotMap.clawTalon.changeControlMode(ControlMode.Position);
 		RobotMap.clawTalon.enableControl();	//is it needed?
-		RobotMap.clawTalon.set(RobotMap.clawTalon.getPosition());	// set setpoint to current position
+		set(RobotMap.clawTalon.getPosition());	// set setpoint to current position
     }
     
 	private static int overCurrentCount=0;
@@ -87,7 +93,7 @@ public class Claw extends Subsystem {
     	{
     		// We are stalled, so stop at this point
     		System.out.println("Claw stalled; telling it to stay at:"+RobotMap.clawTalon.getPosition());
-    		RobotMap.clawTalon.set(RobotMap.clawTalon.getPosition());
+    		set(RobotMap.clawTalon.getPosition());
     	}
 		//System.out.println("Claw current="+RobotMap.clawTalon.getOutputCurrent()+" velocity="+RobotMap.clawTalon.getAnalogInVelocity());
     }
@@ -100,6 +106,11 @@ public class Claw extends Subsystem {
     public int getPIDError()
     {
     	return RobotMap.clawTalon.getClosedLoopError();
+    }
+    
+    public boolean isOpen()
+    {
+    	return isOpen;
     }
 }
 

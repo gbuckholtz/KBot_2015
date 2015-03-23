@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Wrist extends Subsystem {
 	
 	private final static double THRESHOLD = 5.0;	
+	private final static double maxAngleWithClawOpen = 85; 
 
 	public Wrist()
 	{
@@ -41,8 +42,17 @@ public class Wrist extends Subsystem {
 			System.out.println("Wrist ignored a command due to Manual Override");
 			return;
 		}
+		if(Robot.claw.isOpen() && angle > maxAngleWithClawOpen)
+			angle = maxAngleWithClawOpen;
+		if(angle < -37)	//change this if lift is working to a value that depends on lift position (use a function that determines that)
+			angle = -37;
+		/*
+		 * If the lift is at the bottom, the wrist cannot raise up beyond an angle because the bottom of the wrist will rub on the ground.
+		 * So, we need to tell the lift to raise a little bit so we can raise the wrist to our full vertical position.
+		 * OR, we have to set lift level 0 to the point where we can still raise the wrist without hitting the ground.
+		 */
 		double pos = 419+angle*4.626;
-    	RobotMap.wristTalon.set(pos);
+		RobotMap.wristTalon.set(pos);
     	//System.out.println("Wrist set to angle adc="+pos);
     }
     
@@ -64,6 +74,16 @@ public class Wrist extends Subsystem {
     public void down()
     {
     	setAngle(-30);	
+    }
+    
+    public boolean isWristUp()
+    {
+    	if (getAngle() > maxAngleWithClawOpen)
+    	{
+    		return true;
+    	}
+    	else
+    		return false;
     }
     
     public void setVoltageMode()
@@ -121,6 +141,11 @@ public class Wrist extends Subsystem {
     public int getPIDError()
     {
     	return RobotMap.wristTalon.getClosedLoopError();
+    }
+    
+    public double getAngle()
+    {
+    	return RobotMap.wristTalon.getPosition()/4.626 - 419;
     }
 }
 

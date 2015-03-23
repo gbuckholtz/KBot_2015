@@ -15,14 +15,14 @@ public class ClawManualOverride extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.claw.setVoltageMode();
-    	System.out.println("ClawManualOverride init");
+    	Robot.oi.clawVoltage();
+    	//System.out.println("ClawManualOverride init");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.claw.set(Robot.oi.operator.getManualX());
-    	System.out.println("Claw pot value:"+RobotMap.clawTalon.getAnalogInRaw());
+    	//Robot.claw.set(Robot.oi.operator.getManualX());
+    	//System.out.println("Claw pot value:"+RobotMap.clawTalon.getAnalogInRaw());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -32,7 +32,7 @@ public class ClawManualOverride extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.claw.set(0);
+    	Robot.oi.clawPosition();
     }
 
     // Called when another command which requires one or more of the same

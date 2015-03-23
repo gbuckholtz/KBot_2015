@@ -8,26 +8,21 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class CloseClaw extends Command {
 	private final static double TIMEOUT = 3.0;			// second.
-	private static boolean manualControl = false;
+
     public CloseClaw() {
 		super("CloseClaw", TIMEOUT);
         requires(Robot.claw);
     }
     
-    public CloseClaw(boolean control)
-    {
-    	super("CloseClaw", TIMEOUT);
-    	requires(Robot.claw);
-    	manualControl = control;
-    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.claw.setPositionMode();
    }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		Robot.claw.setPositionMode();
+    		
     		Robot.claw.close();
     }
 

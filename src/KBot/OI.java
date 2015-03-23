@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import KBot.XboxController;
-import KBot.commands.ClawController;
 import KBot.commands.ClawManualOverride;
 import KBot.commands.CloseClaw;
+import KBot.commands.DoNothing;
 import KBot.commands.LiftManualOverride;
 import KBot.commands.OpenClaw;
 import KBot.commands.MoveLifter;
@@ -28,44 +28,61 @@ public class OI {
 	public Joystick rightDriver = new Joystick(1);
 	public OperatorController operator = new OperatorController(2);
 	
+	Button level0 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_0);
+	Button level1 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_1);
+	Button level2 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_2);
+	Button level3 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_3);
+	Button level4 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_4);
+	Button level5 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_5);
+	Button open = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_OPEN);
+	Button close = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_CLOSE);
+	Button raise = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_RAISE);
+	Button lower = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_LOWER);
+	Button override = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_OVERRIDE);
+	
 	public OI()
 	{
+		enableLiftButtons();
+		clawPosition();
 		
-		Button level0 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_0);
-		Button level1 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_1);
-		Button level2 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_2);
-		Button level3 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_3);
-		Button level4 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_4);
-		Button level5 = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_5);
-		Button open = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_OPEN);
-		Button close = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_CLOSE);
-		Button raise = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_RAISE);
-		Button lower = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_LOWER);
-		Button override = new JoystickButton(operator.m_joy, OperatorController.OPERATOR_OVERRIDE);
+		raise.whenPressed(new MoveLifter(Lift.offset.RAISE));
+		lower.whenPressed(new MoveLifter(Lift.offset.LOWER));
+	}
+	
+	public void clawVoltage()
+	{
+		
+	}
+	
+	public void clawPosition()
+	{
+		open.whenPressed(new OpenClaw());
+		close.whenPressed(new CloseClaw());
+	}
+	
+	public void initializeOverrideButtons()
+	{
+		override.whileHeld(new LiftManualOverride());
+		override.whileHeld(new WristManualOverride());	// ONLY USE WRIST OR CLAW AS THEY BOTH USE THE X-AXIS OF THE JOYSTICK
+		override.whileHeld(new ClawManualOverride());
+	}
 
-		/*level0.whenPressed(new LiftController(0));
-		level1.whenPressed(new LiftController(0));
-		level2.whenPressed(new LiftController(0));
-		level3.whenPressed(new LiftController(0));
-		level4.whenPressed(new LiftController(0));
-		level5.whenPressed(new LiftController(0));*/
-		
+	public void enableLiftButtons()
+	{
 		level1.whenPressed(new MoveLifter(Lift.level.LVL1));
 		level2.whenPressed(new MoveLifter(Lift.level.LVL2));
 		level3.whenPressed(new MoveLifter(Lift.level.LVL3));
 		level4.whenPressed(new MoveLifter(Lift.level.LVL4));
 		level5.whenPressed(new MoveLifter(Lift.level.LVL5));
-
-		open.whenPressed(new OpenClaw());
-		close.whenPressed(new CloseClaw());
-		raise.whenPressed(new MoveLifter(Lift.offset.RAISE));
-		lower.whenPressed(new MoveLifter(Lift.offset.LOWER));
-		
-		override.whileHeld(new LiftManualOverride());
-		override.whileHeld(new WristManualOverride());	// ONLY USE WRIST OR CLAW AS THEY BOTH USE THE X-AXIS OF THE JOYSTICK
-		//override.whileHeld(new ClawManualOverride());
 	}
-
+	public void disableLiftButtons()
+	{
+		level1.whenPressed(new DoNothing());
+		level2.whenPressed(new DoNothing());
+		level3.whenPressed(new DoNothing());
+		level4.whenPressed(new DoNothing());
+		level5.whenPressed(new DoNothing());
+	}
 	
     
     // There are a few additional built in buttons you can use. Additionally,
