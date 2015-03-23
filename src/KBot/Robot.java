@@ -47,6 +47,7 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand, teleopCommand;
     
 	static private boolean autonomousEnabled = false;
+	private static boolean overrideSet = false;
 	static public boolean isTeleop(){
 		return !autonomousEnabled;
 	}
@@ -149,7 +150,13 @@ public class Robot extends IterativeRobot {
         Robot.visionPIDSubsystem.disable();		//TODO: should not be needed (in the end command of TrackYellowTote)
         //teleopCommand.start();
         oi.operator.disableLights();
-        oi.initializeOverrideButtons();
+        
+        // For some reason, if we initialize the override buttons more than once they won't work anymore, so leave this in.
+        if (!overrideSet)
+        {
+        	oi.initializeOverrideButtons();
+        	overrideSet = true;
+        }
     }
 
     /**

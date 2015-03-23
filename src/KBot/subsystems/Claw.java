@@ -2,8 +2,6 @@ package KBot.subsystems;
 
 import KBot.Robot;
 import KBot.RobotMap;
-import KBot.commands.OpenClaw;
-import KBot.commands.MoveLifter;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,6 +16,12 @@ public class Claw extends Subsystem {
 	private final static double OPEN_VALUE = 930.0;	
 	private final static double CLOSED_VALUE = 1023.0;	
 	private static boolean isOpen = false;
+	public final double openSpeed = 0.6;
+	public final double closeSpeed = -openSpeed;
+	
+	public static enum Mode {SPEED, PID};
+	
+	public Mode clawMode = Claw.Mode.PID;
     
 	public Claw()
 	{
@@ -33,8 +37,7 @@ public class Claw extends Subsystem {
 	}
 	
     public void initDefaultCommand() 
-    {
-    }
+    {}
     
     public void set(double value)
     {
@@ -54,6 +57,14 @@ public class Claw extends Subsystem {
     {
     	set(CLOSED_VALUE);
     	isOpen = false;
+    }
+    
+    public void setSpeed(double speed)
+    {
+    	if (RobotMap.clawTalon.getControlMode() != ControlMode.PercentVbus) {
+			setVoltageMode();
+		} 
+    	RobotMap.clawTalon.set(speed);
     }
 
     public void stop()

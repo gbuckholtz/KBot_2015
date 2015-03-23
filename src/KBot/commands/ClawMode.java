@@ -1,43 +1,44 @@
 package KBot.commands;
 
 import KBot.Robot;
-import KBot.RobotMap;
+import KBot.subsystems.Claw;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ClawManualOverride extends Command {
+public class ClawMode extends Command {
 
-    public ClawManualOverride() {
-        requires(Robot.claw);
+	Claw.Mode mode;
+    public ClawMode(Claw.Mode mode) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	this.mode = mode;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.oi.clawVoltage();
-    	//System.out.println("ClawManualOverride init");
+    	if(Robot.oi.operator.getOverride())
+    		Robot.claw.clawMode = mode;
+    	else
+    		Robot.claw.clawMode = Claw.Mode.PID;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Robot.claw.set(Robot.oi.operator.getManualX());
-    	//System.out.println("Claw pot value:"+RobotMap.clawTalon.getAnalogInRaw());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return !Robot.oi.operator.getOverride();
+        return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.oi.clawPosition();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

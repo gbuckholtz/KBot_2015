@@ -15,7 +15,7 @@ public class LiftManualOverride extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.lift.setSpeed(0);
-    	Robot.oi.disableLiftButtons();
+    	//System.out.println("Lift Manual Override init");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -25,13 +25,13 @@ public class LiftManualOverride extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return !Robot.oi.operator.getOverride();
+        return false;//!Robot.oi.operator.getOverride();
     }
 
     // Called once after isFinished returns true
     protected void end()
     {
-    	Robot.oi.enableLiftButtons();
+    	//System.out.println("Lift Manual Override End");
     }
 
     // Called when another command which requires one or more of the same
