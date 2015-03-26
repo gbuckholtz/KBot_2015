@@ -11,7 +11,7 @@ public class AutoBinAndTote extends CommandGroup {
     public  AutoBinAndTote() {
     	addSequential(new CloseClaw());
     	// MUST RAISE BEFORE TILTING!!
-    	addSequential(new MoveLifter(Lift.level.LVL0, Lift.offset.LOWER));
+    	addSequential(new PrepareLift());
     	//addSequential(new RotateWrist(105));
     	addSequential(new DriveRelative(0.5, 0.0, 0.4));	// move up to first tote
     	addParallel(new DriveRelative(0.2, 0.0, 0.2));		// drive a bit while lifting tote

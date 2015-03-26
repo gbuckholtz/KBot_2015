@@ -12,7 +12,7 @@ public class AutoOneBin extends CommandGroup {
     	// position behind the bin
        	addSequential(new CloseClaw());
     	// MUST RAISE BEFORE TILTING!!
-    	addSequential(new MoveLifter(Lift.level.LVL0, Lift.offset.LOWER));
+    	addSequential(new PrepareLift());
 
     	addSequential(new DriveRelative(0.5, 0.0, 3.0));	// drive to auto zone
     	addSequential(new MoveLifter(Lift.level.LVL0, Lift.offset.LOWER));

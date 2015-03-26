@@ -35,11 +35,12 @@ public class OI {
 	
 	public OI()
 	{
+		level0.whenPressed(new MoveLifter(Lift.level.LVL0));
 		level1.whenPressed(new MoveLifter(Lift.level.LVL1));
 		level2.whenPressed(new MoveLifter(Lift.level.LVL2));
 		level3.whenPressed(new MoveLifter(Lift.level.LVL3));
-		level4.whenPressed(new MoveLifter(Lift.level.LVL4));
-		level5.whenPressed(new MoveLifter(Lift.level.LVL5));
+		//level4.whenPressed(new MoveLifter(Lift.level.LVL4));
+		//level5.whenPressed(new MoveLifter(Lift.level.LVL5));
 		open.whenPressed(new OpenClaw());
 		close.whenPressed(new CloseClaw());
 		raise.whenPressed(new MoveLifter(Lift.offset.RAISE));

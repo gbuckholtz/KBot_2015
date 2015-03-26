@@ -119,7 +119,7 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = new DriveRelative(0.2, 0.0, 0.1); // forward 1 inch
 		//autonomousCommand = new SetLiftHeight(SetLiftHeight.level.LVL2, SetLiftHeight.offset.LOWER);
 		//autonomousCommand = new MoveWrist(-36.5);
-		autonomousCommand = new AutoToteNoLift();
+		autonomousCommand = new AutoJustDrive();
     }
     
     public void autonomousInit() {
