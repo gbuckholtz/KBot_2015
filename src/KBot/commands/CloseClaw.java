@@ -2,6 +2,7 @@ package KBot.commands;
 
 import KBot.Robot;
 import KBot.subsystems.Claw;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -17,7 +18,7 @@ public class CloseClaw extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if (Robot.isTeleop() && Robot.oi.operator.getOverride())
+    	if (Robot.isTeleop() && Robot.oi.operator.getOverride() && DriverStation.getInstance().getMatchTime()>5.0)
     		speedMode = Robot.claw.clawMode == Claw.Mode.SPEED;
     	else
     		speedMode = false;

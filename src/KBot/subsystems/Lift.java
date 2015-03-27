@@ -122,57 +122,28 @@ public class Lift extends Subsystem {
 		// Leave PID on to maintain the position.
 	}
     
-    public boolean isLimitSwitchFaulted()
-    {
-    	return false; //TODO: put back:  RobotMap.liftTalon1.getFaultForLim()!=0 || RobotMap.liftTalon1.getFaultRevLim()!=0;
-    }
-    
     public int getPIDError()
     {
     	return RobotMap.liftTalon1.getClosedLoopError();
     }
     
-    //This can probably be removed if the limit switches allow us to drive in reverse
-    public void driveOffLimitSwitch()
+	private static int overCurrentCount=0;
+    public void checkMotors()
     {
-		if (RobotMap.liftTalon1.getFaultForLim()!=0) {
-			// Forward limit switch fault:
-			
-			if (RobotMap.liftTalon1.isFwdLimitSwitchClosed()) {
-				// switch to voltage control, disable the switch and move back:
-				if (RobotMap.liftTalon1.getControlMode() != ControlMode.PercentVbus) {
-					RobotMap.liftTalon1.changeControlMode(ControlMode.PercentVbus);
-				}
-				RobotMap.liftTalon1.enableLimitSwitch(false, false);
-				RobotMap.liftTalon1.set(-0.25);
-			} else {
-				// the limit switch is off now, so restore position control mode and enable switch
-				RobotMap.liftTalon1.changeControlMode(ControlMode.Position);
-				RobotMap.liftTalon1.enableLimitSwitch(true, true);
-				//stop so we don't drive onto the switch again
-				Robot.lift.stop();
-				// and wait for fault to clear
-			}
-			
-		} else if (RobotMap.liftTalon1.getFaultRevLim()!=0) {
-			// Reverse limit switch fault:
-			
-			if (RobotMap.liftTalon1.isRevLimitSwitchClosed()) {
-				// switch to voltage control, disable the switch and move forward
-				if (RobotMap.liftTalon1.getControlMode() != ControlMode.PercentVbus) {
-					RobotMap.liftTalon1.changeControlMode(ControlMode.PercentVbus);
-				}
-				RobotMap.liftTalon1.enableLimitSwitch(false, false);
-				RobotMap.liftTalon1.set(0.25);
-			} else {
-				// the limit switch is off now, so restore position control mode and enable switch
-				RobotMap.liftTalon1.changeControlMode(ControlMode.Position);
-				RobotMap.liftTalon1.enableLimitSwitch(true, true);
-				//stop so we don't drive onto the switch again
-				Robot.lift.stop();
-				// and wait for fault to clear
-			}
-		}    	
+    	if (RobotMap.liftTalon1.getOutputCurrent()>6.0)
+    		overCurrentCount++;
+    	else
+    		overCurrentCount=0;
+    	if (RobotMap.liftTalon1.getAnalogInVelocity()==0 && overCurrentCount>25)
+    	{
+    		// We are stalled, so stop at this point
+    		System.out.println("Lift stalled; telling it to stay at:"+RobotMap.liftTalon1.getPosition());
+    		RobotMap.liftTalon1.set(RobotMap.liftTalon1.getPosition());
+    	}
+		//System.out.println("Lift talon 1 current="+RobotMap.liftTalon1.getOutputCurrent()+" velocity="+RobotMap.liftTalon1.getAnalogInVelocity());
+		//System.out.println("Lift talon 2 current="+RobotMap.liftTalon2.getOutputCurrent()+" velocity="+RobotMap.liftTalon2.getAnalogInVelocity());
+		//System.out.println("Lift talon 3 current="+RobotMap.liftTalon3.getOutputCurrent()+" velocity="+RobotMap.liftTalon3.getAnalogInVelocity());
     }
+
 }
 

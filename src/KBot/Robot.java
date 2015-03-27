@@ -11,6 +11,7 @@ import KBot.commands.AutoStack2NoVision;
 import KBot.commands.AutoStack3;
 import KBot.commands.AutoStack3NoVision;
 import KBot.commands.AutoToteNoLift;
+import KBot.commands.Collapse;
 import KBot.commands.DriveController;
 import KBot.commands.DriveRelative;
 import KBot.commands.MoveLifter;
@@ -22,10 +23,12 @@ import KBot.subsystems.DriveTrain;
 import KBot.subsystems.Lift;
 import KBot.subsystems.VisionPIDDrive;
 import KBot.subsystems.Wrist;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -160,7 +163,7 @@ public class Robot extends IterativeRobot {
     }
 
     /**
-     * This function is called periodically during operator control
+     * This function is called periodically during operator control+
      */
     public void teleopPeriodic() {
         autonomousEnabled = isAutonomous();
@@ -168,6 +171,19 @@ public class Robot extends IterativeRobot {
         Robot.wrist.checkMotors();
         Scheduler.getInstance().run();
         oi.operator.tron();
+        SmartDashboard.putNumber("Claw", claw.getClawPosition());
+        SmartDashboard.putNumber("Wrsit", (wrist.getAngle()/105));
+        SmartDashboard.putNumber("Lift", RobotMap.liftTalon1.getPosition());
+        SmartDashboard.putNumber("Lift1 i", RobotMap.liftTalon1.getOutputCurrent());
+        SmartDashboard.putNumber("Lift1 v", RobotMap.liftTalon1.getAnalogInVelocity());
+        SmartDashboard.putNumber("Lift2 i", RobotMap.liftTalon1.getOutputCurrent());
+        SmartDashboard.putNumber("Lift2 v", RobotMap.liftTalon1.getAnalogInVelocity());
+        SmartDashboard.putNumber("Lift3 i", RobotMap.liftTalon1.getOutputCurrent());
+        SmartDashboard.putNumber("Lift3 v", RobotMap.liftTalon1.getAnalogInVelocity());
+        if (DriverStation.getInstance().getMatchTime() < 5.0)        
+        {
+        	new Collapse();
+        }
         //System.out.println("Wrist Pot: " + (RobotMap.wristPot.get()/3.674-384) + " | Operator Pot: " + oi.operator.getPotAngle());
     }
     

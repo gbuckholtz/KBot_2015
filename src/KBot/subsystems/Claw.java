@@ -49,14 +49,21 @@ public class Claw extends Subsystem {
     
     public void open()
     {
-    	set(OPEN_VALUE);
-    	isOpen = true;
+    	if (!Robot.wrist.isWristUp())
+    	{
+    		set(OPEN_VALUE);
+        	isOpen = true;
+    	}
+    	
     }
   
     public void close()
     {
-    	set(CLOSED_VALUE);
-    	isOpen = false;
+    	if (!Robot.wrist.isWristUp())
+    	{
+    		set(CLOSED_VALUE);
+        	isOpen = false;
+    	}
     }
     
     public void setSpeed(double speed)
@@ -96,7 +103,7 @@ public class Claw extends Subsystem {
 	private static int overCurrentCount=0;
     public void checkMotors()
     {
-    	if (RobotMap.clawTalon.getOutputCurrent()>2.5)
+    	if (RobotMap.clawTalon.getOutputCurrent()>3.0)
     		overCurrentCount++;
     	else
     		overCurrentCount=0;
@@ -122,6 +129,11 @@ public class Claw extends Subsystem {
     public boolean isOpen()
     {
     	return isOpen;
+    }
+    public double getClawPosition()
+    {
+    	return (RobotMap.clawTalon.getPosition()/OPEN_VALUE);
+    	
     }
 }
 
