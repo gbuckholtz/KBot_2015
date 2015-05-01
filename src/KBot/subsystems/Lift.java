@@ -2,6 +2,7 @@ package KBot.subsystems;
 
 import KBot.Robot;
 import KBot.RobotMap;
+import KBot.commands.LiftManualOverride;
 import KBot.commands.MoveLifter;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
@@ -18,7 +19,7 @@ public class Lift extends Subsystem {
 	
 	public static enum offset { RAISE, LOWER };
 	public static enum level { LVL0, LVL1, LVL2, LVL3, LVL4, LVL5 };
-	private final static double ENCODER_COUNTS_PER_INCH = 50;	//TODO: tune this by trial and error
+	public final static double ENCODER_COUNTS_PER_INCH = 178;	//TODO: tune this by trial and error
 	
 	private int setpoint=0, relative=0;
 	
@@ -33,8 +34,8 @@ public class Lift extends Subsystem {
 		RobotMap.liftTalon1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		RobotMap.liftTalon1.reverseOutput(true); 	// Make it so that positive is up. FOR CLOSED LOOP ONLY.
 		RobotMap.liftTalon1.reverseSensor(false);	// encoder readout is currently opposite to motor direction
-		RobotMap.liftTalon1.setVoltageRampRate(8.0);		// use if necessary
-		RobotMap.liftTalon1.setCloseLoopRampRate(8.0);
+		RobotMap.liftTalon1.setVoltageRampRate(30.0);		// use if necessary
+		RobotMap.liftTalon1.setCloseLoopRampRate(30.0);
 		RobotMap.liftTalon1.setPID(5.0, 0.0, 0.0);
 		resetEncoders();
 		RobotMap.liftTalon1.set(0);
@@ -43,6 +44,7 @@ public class Lift extends Subsystem {
 
     public void initDefaultCommand() 
     {
+    	//setDefaultCommand(new LiftManualOverride());
     }
     
     public void setSpeed(double speed)
@@ -70,32 +72,32 @@ public class Lift extends Subsystem {
 		if (lvl!=null) {
 			switch (lvl) {
 			case LVL0:
-				this.setpoint = 0;
+				setpoint = 0;
 				break;
 			case LVL1:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12);
+				setpoint = (int)(ENCODER_COUNTS_PER_INCH*12);
 				break;
 			case LVL2:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*2);
+				setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*2);
 				break;
 			case LVL3:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*3);
+				setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*3);
 				break;
 			case LVL4:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*4);
+				setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*4);
 				break;
 			case LVL5:
-				this.setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*5);
+				setpoint = (int)(ENCODER_COUNTS_PER_INCH*12*5);
 				break;
 			}
 		}
 		if (off!=null) {
 			switch (off) {
 			case RAISE:
-				this.relative = (int)(ENCODER_COUNTS_PER_INCH*9);
+				relative = (int)(ENCODER_COUNTS_PER_INCH*9);
 				break;
 			case LOWER:
-				this.relative = 0;
+				relative = 0;
 				break;
 			}			
 		}
@@ -130,7 +132,7 @@ public class Lift extends Subsystem {
 	private static int overCurrentCount=0;
     public void checkMotors()
     {
-    	if (RobotMap.liftTalon1.getOutputCurrent()>6.0)
+    	if (RobotMap.liftTalon1.getOutputCurrent()>4.0)
     		overCurrentCount++;
     	else
     		overCurrentCount=0;

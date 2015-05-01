@@ -1,6 +1,7 @@
 package KBot.subsystems;
 
 //import KBot.Robot;
+import KBot.Robot;
 import KBot.RobotMap;
 import KBot.commands.DriveController;
 //import edu.wpi.first.wpilibj.Relay.Direction;
@@ -37,7 +38,29 @@ public class DriveTrain extends Subsystem {
     		left = -left; right = -right;
     		
     	RobotMap.drive.tankDrive(left, right, true);
+
+    	/*if(Robot.oi.leftDriver.getRawButton(6))
+    		white();
+    	else if(Robot.oi.leftDriver.getRawButton(7))
+    		green();
+    	else if(Robot.oi.leftDriver.getRawButton(11))
+    		blue();
+    	else if(Robot.oi.leftDriver.getRawButton(10))
+    		red();
+    	else if(Robot.oi.rightDriver.getRawButton(6))
+        	aqua();
+       	else if(Robot.oi.rightDriver.getRawButton(7))
+      		purple();
+    	else if(Robot.oi.rightDriver.getRawButton(11))
+    		yellow();
+    	else if(Robot.oi.rightDriver.getRawButton(10))
+        	pink();
+    	else if(Robot.oi.leftDriver.getRawButton(8))
+    		orange();
+    	else if(Robot.oi.leftDriver.getRawButton(9))
+    		lime();*/
     	
+
     	//System.out.println("Encoder: " + RobotMap.driveEncoderLeft.get() + " | EncoderRight: " + RobotMap.driveEncoderRight.get());
     	if (left>0.2)
     	{
@@ -78,7 +101,77 @@ public class DriveTrain extends Subsystem {
     	} else {
     		RobotMap.green.set(Value.kForward);    		
     	}
+    	
     	RobotMap.drive.drive(speed, curve);
+    }
+    
+    //Colors
+    private boolean flip = false;
+    public void white()
+    {
+    	RobotMap.green.set(Value.kReverse);
+		RobotMap.red.set(Value.kReverse);
+		RobotMap.blue.set(Value.kReverse);
+    }
+    public void green()
+    {
+    	RobotMap.green.set(Value.kReverse);
+		RobotMap.red.set(Value.kForward);
+		RobotMap.blue.set(Value.kForward);
+    }
+    public void red()
+    {
+    	RobotMap.green.set(Value.kForward);
+		RobotMap.red.set(Value.kReverse);
+		RobotMap.blue.set(Value.kForward);
+    }
+    public void blue()
+    {
+    	RobotMap.green.set(Value.kForward);
+		RobotMap.red.set(Value.kForward);
+		RobotMap.blue.set(Value.kReverse);
+    }
+    public void aqua()
+    {
+    	RobotMap.green.set(Value.kReverse);
+		RobotMap.red.set(Value.kForward);
+		RobotMap.blue.set(Value.kReverse);
+    }
+    public void purple()
+    {
+    	RobotMap.green.set(Value.kForward);
+		RobotMap.red.set(Value.kReverse);
+		RobotMap.blue.set(Value.kReverse);
+    }
+    public void yellow()
+    {
+    	RobotMap.green.set(Value.kReverse);
+		RobotMap.red.set(Value.kReverse);
+		RobotMap.blue.set(Value.kForward);
+    }
+    public void pink()
+    {
+    	if (flip)
+    		white();
+    	else
+    		red();
+    	flip = !flip;
+    }
+    public void orange()
+    {
+    	if (flip)
+    		yellow();
+    	else
+    		red();
+    	flip = !flip;
+    }
+    public void lime()
+    {
+    	if (flip)
+    		white();
+    	else
+    		green();
+    	flip = !flip;
     }
 }
 

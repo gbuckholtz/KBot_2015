@@ -17,7 +17,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Wrist extends Subsystem {
 	
 	private final static double THRESHOLD = 5.0;	
-	private final static double maxAngleWithClawOpen = 85; 
+	private final static double maxAngleWithClawOpen = 70; //80; new claw motor hits at 80 degrees
+	private final static double intercept = 347.8;
+	private final static double slope = 4.7;
 
 	public Wrist()
 	{
@@ -51,7 +53,7 @@ public class Wrist extends Subsystem {
 		 * So, we need to tell the lift to raise a little bit so we can raise the wrist to our full vertical position.
 		 * OR, we have to set lift level 0 to the point where we can still raise the wrist without hitting the ground.
 		 */
-		double pos = 419+angle*4.626;
+		double pos = intercept+angle*slope;
 		RobotMap.wristTalon.set(pos);
     	//System.out.println("Wrist set to angle adc="+pos);
     }
@@ -102,6 +104,9 @@ public class Wrist extends Subsystem {
     
     public void setSpeed(double speed)
     {
+    	// Only drive down if angle is too high
+    	if(Robot.claw.isOpen() && speed < 0 && getAngle() > maxAngleWithClawOpen)
+    		speed = 0;
 		RobotMap.wristTalon.set(-speed); // Make positive up
     }
     
@@ -145,7 +150,7 @@ public class Wrist extends Subsystem {
     
     public double getAngle()
     {
-    	return RobotMap.wristTalon.getPosition()/4.626 - 419;
+    	return (RobotMap.wristTalon.getPosition() - intercept)/slope;
     }
 }
 

@@ -25,7 +25,7 @@ public class MoveLifter extends Command {
 	private int cycleCount=0;
 	private boolean firstCycle=true;
 	
-	private final static double TIMEOUT = 2.0;			// seconds. Timeout for any lift command
+	private final static double TIMEOUT = 6.0;			// seconds. Timeout for any lift command
 	private final static int THRESHOLD = 10;	
 	private final static int STABLE_CYCLE_COUNT = 10;	// How many cycles output must be within THRESHOLD before being considered "finished"
 	
@@ -58,13 +58,7 @@ public class MoveLifter extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (Robot.lift.isLimitSwitchFaulted()) {
-			Robot.lift.driveOffLimitSwitch();
-		} else {
-			// No faults, so give it the setpoint
-			Robot.lift.setPosition(level, offset);
-			//System.out.println(level+"   "+offset);
-		}
+		Robot.lift.setPosition(level, offset);
 		firstCycle=false;
 	}
 

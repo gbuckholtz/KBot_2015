@@ -13,8 +13,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Claw extends Subsystem {
 	
 	private final static int THRESHOLD = 4;	
-	private final static double OPEN_VALUE = 930.0;	
-	private final static double CLOSED_VALUE = 1023.0;	
+	private final static double OPEN_VALUE = 764.0;	
+	private final static double CLOSED_VALUE = 934.0;
+	private final static double minValueWhenWristUp = 890.0;
 	private static boolean isOpen = false;
 	public final double openSpeed = 0.6;
 	public final double closeSpeed = -openSpeed;
@@ -41,29 +42,30 @@ public class Claw extends Subsystem {
     
     public void set(double value)
     {
-    	if (!Robot.wrist.isWristUp())
-    		RobotMap.clawTalon.set(value);
+    	if (Robot.wrist.isWristUp() && value<minValueWhenWristUp)
+    		System.out.println("Can't Open Claw any more; Wrist is Up.");
     	else
-    		System.out.println("Can't Open Claw; Wrist is Up.");
-    }
+    		RobotMap.clawTalon.set(value);
+   }
     
     public void open()
     {
     	if (!Robot.wrist.isWristUp())
     	{
     		set(OPEN_VALUE);
+    		System.out.println("Open value:"+Robot.wrist.getAngle());
         	isOpen = true;
     	}
+    	else
+    		System.out.println("Open ignored because wrist is up");
     	
     }
   
     public void close()
     {
-    	if (!Robot.wrist.isWristUp())
-    	{
-    		set(CLOSED_VALUE);
-        	isOpen = false;
-    	}
+    	set(CLOSED_VALUE);
+        isOpen = false;
+		System.out.println("Close value:"+Robot.wrist.getAngle());
     }
     
     public void setSpeed(double speed)
@@ -81,7 +83,7 @@ public class Claw extends Subsystem {
 		} 
 
 		set(RobotMap.clawTalon.getPosition());	// set setpoint to current position
-		RobotMap.clawTalon.ClearIaccum();							// clear built up error term
+		RobotMap.clawTalon.ClearIaccum();		// clear built up error term
 		
 		// Leave PID on to maintain the position.
 	}
@@ -103,7 +105,7 @@ public class Claw extends Subsystem {
 	private static int overCurrentCount=0;
     public void checkMotors()
     {
-    	if (RobotMap.clawTalon.getOutputCurrent()>3.0)
+    	if (RobotMap.clawTalon.getOutputCurrent()>4.0)
     		overCurrentCount++;
     	else
     		overCurrentCount=0;

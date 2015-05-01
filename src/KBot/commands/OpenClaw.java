@@ -15,10 +15,17 @@ public class OpenClaw extends Command {
 		super("OpenClaw", TIMEOUT);
         requires(Robot.claw);
     }
+    
+    
+    public OpenClaw(double time)
+    {
+    	super("OpenClaw", time);
+    	requires(Robot.claw);
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if (Robot.isTeleop() && Robot.oi.operator.getOverride()&& DriverStation.getInstance().getMatchTime()>5.0)
+    	if (Robot.isTeleop() && Robot.oi.operator.getOverride())
     		speedMode = Robot.claw.clawMode == Claw.Mode.SPEED;
     	else
     		speedMode = false;
@@ -55,7 +62,7 @@ public class OpenClaw extends Command {
     protected void end() {
     	if (speedMode)
     		Robot.claw.setSpeed(0);
-		//Robot.claw.stop(); // leave PID running??
+		//Robot.claw.stop(); // leave PID running
     }
 
     // Called when another command which requires one or more of the same

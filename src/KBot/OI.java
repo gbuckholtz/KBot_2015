@@ -41,6 +41,7 @@ public class OI {
 		level3.whenPressed(new MoveLifter(Lift.level.LVL3));
 		//level4.whenPressed(new MoveLifter(Lift.level.LVL4));
 		//level5.whenPressed(new MoveLifter(Lift.level.LVL5));
+		
 		open.whenPressed(new OpenClaw());
 		close.whenPressed(new CloseClaw());
 		raise.whenPressed(new MoveLifter(Lift.offset.RAISE));

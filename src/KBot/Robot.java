@@ -12,6 +12,7 @@ import KBot.commands.AutoStack3;
 import KBot.commands.AutoStack3NoVision;
 import KBot.commands.AutoToteNoLift;
 import KBot.commands.Collapse;
+import KBot.commands.CollapseCommand;
 import KBot.commands.DriveController;
 import KBot.commands.DriveRelative;
 import KBot.commands.MoveLifter;
@@ -25,6 +26,7 @@ import KBot.subsystems.VisionPIDDrive;
 import KBot.subsystems.Wrist;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -46,11 +48,13 @@ public class Robot extends IterativeRobot {
 	public static Wrist wrist;
 	public static Vision visionSubsystem;
 	public static VisionPIDDrive visionPIDSubsystem;
+	private static Timer countdown;
 
     Command autonomousCommand, teleopCommand;
     
 	static private boolean autonomousEnabled = false;
 	private static boolean overrideSet = false;
+	private static boolean collapsed = false;
 	static public boolean isTeleop(){
 		return !autonomousEnabled;
 	}
@@ -72,6 +76,7 @@ public class Robot extends IterativeRobot {
 		
         // instantiate the command used for the teleop period
 		teleopCommand = new DriveController();
+		countdown = new Timer();
 		
         // instantiate the command used for the autonomous period
 		//setAutonomousMode();
@@ -122,7 +127,8 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = new DriveRelative(0.2, 0.0, 0.1); // forward 1 inch
 		//autonomousCommand = new SetLiftHeight(SetLiftHeight.level.LVL2, SetLiftHeight.offset.LOWER);
 		//autonomousCommand = new MoveWrist(-36.5);
-		autonomousCommand = new AutoJustDrive();
+		//autonomousCommand = new AutoJustDrive();
+    	autonomousCommand = new AutoOneBin();
     }
     
     public void autonomousInit() {
@@ -153,6 +159,10 @@ public class Robot extends IterativeRobot {
         Robot.visionPIDSubsystem.disable();		//TODO: should not be needed (in the end command of TrackYellowTote)
         //teleopCommand.start();
         oi.operator.disableLights();
+        countdown.reset();
+        countdown.start();
+        collapsed = false;
+        
         
         // For some reason, if we initialize the override buttons more than once they won't work anymore, so leave this in.
         if (!overrideSet)
@@ -163,12 +173,13 @@ public class Robot extends IterativeRobot {
     }
 
     /**
-     * This function is called periodically during operator control+
+     * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
         autonomousEnabled = isAutonomous();
         Robot.claw.checkMotors();
         Robot.wrist.checkMotors();
+        //Robot.lift.checkMotors();
         Scheduler.getInstance().run();
         oi.operator.tron();
         SmartDashboard.putNumber("Claw", claw.getClawPosition());
@@ -180,9 +191,14 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Lift2 v", RobotMap.liftTalon1.getAnalogInVelocity());
         SmartDashboard.putNumber("Lift3 i", RobotMap.liftTalon1.getOutputCurrent());
         SmartDashboard.putNumber("Lift3 v", RobotMap.liftTalon1.getAnalogInVelocity());
-        if (DriverStation.getInstance().getMatchTime() < 5.0)        
+        	
+        if (countdown.get() > 115 && !collapsed)        
         {
-        	new Collapse();
+        	System.out.println(" Collapsing at Match time: " + DriverStation.getInstance().getMatchTime());
+        	Command collapse = new Collapse();
+        	collapse.start();
+        	System.out.println("Ending Match");
+        	collapsed = true;
         }
         //System.out.println("Wrist Pot: " + (RobotMap.wristPot.get()/3.674-384) + " | Operator Pot: " + oi.operator.getPotAngle());
     }
@@ -195,12 +211,15 @@ public class Robot extends IterativeRobot {
         autonomousEnabled = isAutonomous();
     	if (teleopCommand != null) teleopCommand.cancel();
     	if (autonomousCommand != null) autonomousCommand.cancel();
+    	//countdown.reset();
+    	collapsed = false;
     }
     
 	int count=0;
 	public void disabledPeriodic() {
         autonomousEnabled = isAutonomous();
 		oi.operator.pacman();
+		//System.out.println("Auto Selector Pot: " + RobotMap.autoTimerInput.getValue());
 		//System.out.println("Wrist Pot: " + RobotMap.wristPot.get() + " | Operator Pot: " + oi.operator.getPotAngle());
 		//System.out.println("3: " + oi.operator.getPotAngle());
 		

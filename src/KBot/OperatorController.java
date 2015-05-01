@@ -51,6 +51,9 @@ public class OperatorController {
     private boolean lightsOn = false;
     private boolean timerOn = false;
     
+    private int lastLevel=0;
+    private boolean isRaised=false;
+    
     public OperatorController(int number) 
     {
         m_joy = new Joystick(number);
@@ -65,42 +68,82 @@ public class OperatorController {
     
     public boolean get0() 
     {
-    	return setLight(OPERATOR_0, Group.LEVELS);
+    	if (setLight(OPERATOR_0, Group.LEVELS))
+    	{
+    		lastLevel=0;
+    		return true;
+    	}
+    	return false;
     }
     
     public boolean get1() 
     {
-        return setLight(OPERATOR_1, Group.LEVELS);
+    	if ( setLight(OPERATOR_1, Group.LEVELS))
+    	{
+    		lastLevel=1;
+    		return true;
+    	}
+    	return false;
     }
     
     public boolean get2()
     {
-        return setLight(OPERATOR_2, Group.LEVELS);
+    	if ( setLight(OPERATOR_2, Group.LEVELS))
+    	{
+    		lastLevel=2;
+    		return true;
+    	}
+    	return false;
     }
     
     public boolean get3()
     {
-        return setLight(OPERATOR_3, Group.LEVELS);
+    	if ( setLight(OPERATOR_3, Group.LEVELS))
+    	{
+    		lastLevel=3;
+    		return true;
+    	}
+    	return false;
     }
     
     public boolean get4()
     {
-        return setLight(OPERATOR_4, Group.LEVELS);
+    	if ( setLight(OPERATOR_4, Group.LEVELS))
+    	{
+    		lastLevel=4;
+    		return true;
+    	}
+    	return false;
     }
     
     public boolean get5()
     {
-        return setLight(OPERATOR_5, Group.LEVELS);
+    	if ( setLight(OPERATOR_5, Group.LEVELS))
+    	{
+    		lastLevel=5;
+    		return true;
+    	}
+    	return false;
     }
     
     public boolean getLower()
     {
-    	return setLight(OPERATOR_LOWER, Group.LIFT);
+    	if ( setLight(OPERATOR_LOWER, Group.LIFT))
+    	{
+    		isRaised=false;
+    		return true;
+    	}
+    	return false;
     }
     
     public boolean getRaise()
     {
-    	return setLight(OPERATOR_RAISE, Group.LIFT);
+    	if ( setLight(OPERATOR_RAISE, Group.LIFT))
+    	{
+    		isRaised=true;
+    		return true;
+    	}
+    	return false;
     }
     
     public boolean getOpen()
@@ -230,6 +273,16 @@ public class OperatorController {
     			m_joy.setOutput(OPERATOR_OVERRIDE, true);
     			break;
     	}
+    }
+    
+    public int getLevel()
+    {
+    	return lastLevel;
+    }
+    
+    public boolean isRaised()
+    {
+    	return isRaised;
     }
     
     private boolean setLight(int button, Group group)

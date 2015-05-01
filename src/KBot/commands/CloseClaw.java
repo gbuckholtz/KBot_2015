@@ -11,14 +11,20 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CloseClaw extends Command {
 	private final static double TIMEOUT = 3.0;			// second.
 	private boolean speedMode;
+	
     public CloseClaw() {
 		super("CloseClaw", TIMEOUT);
         requires(Robot.claw);
     }
 
+    public CloseClaw(double time) {
+		super("CloseClaw", time);
+        requires(Robot.claw);
+    }
+
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if (Robot.isTeleop() && Robot.oi.operator.getOverride() && DriverStation.getInstance().getMatchTime()>5.0)
+    	if (Robot.isTeleop() && Robot.oi.operator.getOverride())
     		speedMode = Robot.claw.clawMode == Claw.Mode.SPEED;
     	else
     		speedMode = false;
@@ -56,7 +62,7 @@ public class CloseClaw extends Command {
     	if (speedMode)
     		Robot.claw.setSpeed(0);
 		//Robot.claw.stop(); //Leave PID running
-   }
+    }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run

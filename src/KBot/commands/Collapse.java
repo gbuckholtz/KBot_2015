@@ -1,7 +1,11 @@
 package KBot.commands;
 
+import KBot.Robot;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
+import edu.wpi.first.wpilibj.command.WaitUntilCommand;
 
 /**
  *
@@ -9,26 +13,16 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Collapse extends CommandGroup {
     
     public  Collapse() {
+    	
+    	System.out.println("Collapsing Robot");
 
     	this.setInterruptible(false);					// MR WOOD ADDED THIS!!  DO WE WANT IT?
     	
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
-    	addSequential(new OpenClaw());
+    	if(!Robot.claw.isOpen())
+    		addSequential(new OpenClaw(1.0));
     	addParallel(new CloseClaw());
-    	addSequential(new MoveWrist(105));
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
+    	addSequential(new MoveWrist(80));
+    	addSequential(new WaitCommand(3));
+    	//addSequential(new WaitUntilCommand(0));
     }
 }
