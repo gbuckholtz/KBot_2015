@@ -41,6 +41,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	private final int collapse_time = 115;
+	private final boolean collapse_on = false;
+	
 	public static OI oi;
 	public static DriveTrain drivetrain;
 	public static Lift lift;
@@ -192,7 +195,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Lift3 i", RobotMap.liftTalon1.getOutputCurrent());
         SmartDashboard.putNumber("Lift3 v", RobotMap.liftTalon1.getAnalogInVelocity());
         	
-        if (countdown.get() > 115 && !collapsed)        
+        if (countdown.get() > collapse_time && !collapsed && collapse_on)        
         {
         	System.out.println(" Collapsing at Match time: " + DriverStation.getInstance().getMatchTime());
         	Command collapse = new Collapse();

@@ -125,7 +125,7 @@ public class Wrist extends Subsystem {
 	private static int overCurrentCount=0;
     public void checkMotors()
     {
-    	if (RobotMap.wristTalon.getOutputCurrent()>3.0)
+    	if (RobotMap.wristTalon.getOutputCurrent()>1.5)
     		overCurrentCount++;
     	else
     		overCurrentCount=0;
