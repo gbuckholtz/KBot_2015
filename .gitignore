@@ -1,2 +1,6 @@
 bin/
 *.class
+build/
+dist/
+sysProps.xml
+/nbproject/private/
