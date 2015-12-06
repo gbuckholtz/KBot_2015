@@ -1,7 +1,5 @@
 package KBot.subsystems;
 
-//import KBot.Robot;
-import KBot.Robot;
 import KBot.RobotMap;
 import KBot.commands.DriveController;
 //import edu.wpi.first.wpilibj.Relay.Direction;
