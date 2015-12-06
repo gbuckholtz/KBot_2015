@@ -39,27 +39,6 @@ public class DriveTrain extends Subsystem {
     		
     	RobotMap.drive.tankDrive(left, right, true);
 
-    	/*if(Robot.oi.leftDriver.getRawButton(6))
-    		white();
-    	else if(Robot.oi.leftDriver.getRawButton(7))
-    		green();
-    	else if(Robot.oi.leftDriver.getRawButton(11))
-    		blue();
-    	else if(Robot.oi.leftDriver.getRawButton(10))
-    		red();
-    	else if(Robot.oi.rightDriver.getRawButton(6))
-        	aqua();
-       	else if(Robot.oi.rightDriver.getRawButton(7))
-      		purple();
-    	else if(Robot.oi.rightDriver.getRawButton(11))
-    		yellow();
-    	else if(Robot.oi.rightDriver.getRawButton(10))
-        	pink();
-    	else if(Robot.oi.leftDriver.getRawButton(8))
-    		orange();
-    	else if(Robot.oi.leftDriver.getRawButton(9))
-    		lime();*/
-    	
 
     	//System.out.println("Encoder: " + RobotMap.driveEncoderLeft.get() + " | EncoderRight: " + RobotMap.driveEncoderRight.get());
     	if (left>0.2)
