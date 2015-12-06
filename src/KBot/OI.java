@@ -1,7 +1,6 @@
 package KBot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -18,7 +17,6 @@ public class OI {
 	public OI()
 	{
 		//soundButton.whenPressed(command); //@todo have to put in a joystick sound command
-
 	}
 	
 
